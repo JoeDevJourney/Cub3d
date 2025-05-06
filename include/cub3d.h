@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:27:29 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/06 20:14:02 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/06 20:45:26 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ typedef struct s_config
 
 
 // Functions
-int	parse_file(const char *path, t_config *cfg);
+int	parser(const char *path, t_config *cfg);
 int	validate_cfg(t_config *cfg);
 
 #endif

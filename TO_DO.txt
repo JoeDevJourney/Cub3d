@@ -1,0 +1,4 @@
+
+
+TO DO: add check if color nbr is >= 0 && <= 255 
+
