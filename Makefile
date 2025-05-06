@@ -6,8 +6,8 @@ SRCDIR = ./src
 OBJDIR = ./obj
 INCDIR = ./include
 LIBFTDIR = ./include/libft
-LIBMLX = ./lib/MLX42
-LIB = $(LIBFT)/libft.a $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
+LIBMLX = ./MLX42
+LIB = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
 SRCS = 
 OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
@@ -54,6 +54,7 @@ clean:
 	@echo "\033[33mRemoving project build and library build...\033[0m"
 	rm -f $(OBJDIR)/*.o
 	rm -rf $(OBJDIR)
+	rm -rf $(LIBMLX)
 	$(MAKE) -C $(LIBFTDIR) clean
 	@echo "All build files removed \033[32msuccessfully\033[0m!"
 
