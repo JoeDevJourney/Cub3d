@@ -6,7 +6,7 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:27:29 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/06 17:21:36 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/06 19:30:35 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,4 +19,20 @@
 # include <stdio.h>
 # include <stdlib.h>
 
+# define WIDTH 1980
+# define HEIGHT 1080
+
+typedef struct s_cub
+{
+	void			*mlx;
+	void			*window;
+	mlx_t			*mlx_connect;
+	mlx_image_t		*img;
+	char			*img_buffer;
+	char			*img_addr;
+}			t_cub;
+
+// Utils
+void			malloc_error(void);
+// Events
 #endif
