@@ -6,12 +6,20 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:00:10 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/06 18:17:55 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/06 20:20:10 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSER_H
 #define PARSER_H
+
+
+#include "../libft/inc/libft.h"
+#include <fcntl.h>
+#include <unistd.h>›
+#include <stdlib.h>
+#include <stdio.h>
+#include "cub3d.h"
 
 //Colors used for terminal output____________________
 # define GREEN "\033[0;32m"
@@ -25,11 +33,8 @@
 # define MAG "\033[0;35m"// Magenta
 # define CYAN "\x1b[36m" //Cyan
 
-// Map Struct______________________________
-typedef struct s_strc_map
-{
-	char			*value;
-	struct s_token	*next;
-}	t_strc_map;
+// Functions
+
+
 
 #endif
