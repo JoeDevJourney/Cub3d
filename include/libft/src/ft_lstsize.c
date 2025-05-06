@@ -1,35 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/07 18:08:54 by jorgutie          #+#    #+#             */
-/*   Updated: 2024/10/13 19:51:57 by jorgutie         ###   ########.fr       */
+/*   Created: 2024/10/14 13:40:04 by jorgutie          #+#    #+#             */
+/*   Updated: 2024/10/15 16:04:51 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isalpha(int c)
+int	ft_lstsize(t_list *lst)
 {
-	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-	{
-		return (1);
-	}
-	else
-	{
-		return (0);
-	}
-}
-/*
-int main(void)
-{
-	char c = 92;
-	int r;
+	int		i;
 
-	r = ft_isalpha(c);
-	printf("%d",r);
+	if (!lst)
+		return (0);
+	i = 0;
+	while (lst)
+	{
+		i++;
+		lst = lst->next;
+	}
+	return (i);
 }
-*/

@@ -3,23 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pauladrettas <pauladrettas@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/08 12:03:59 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/01/28 16:17:22 by dchrysov         ###   ########.fr       */
+/*   Created: 2024/10/08 13:40:18 by jorgutie          #+#    #+#             */
+/*   Updated: 2025/03/02 00:34:07 by pauladretta      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "libft.h"
 
-unsigned long	ft_strlen(const char *str)
+int	ft_strlen(const char *str)
 {
-	unsigned long	len;
+	int	i;
 
-	if (!str)
-		return (0);
-	len = 0;
-	while (*str++)
-		len++;
-	return (len);
+	i = 0;
+	while (str[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
 }
+/*
+int main(void)
+{
+	int	r;
+	char str[] = "Holas mi querida";
+	char* p = str;
+	
+	r = ft_strlen(p);
+	printf("%d", r);
+}	*/

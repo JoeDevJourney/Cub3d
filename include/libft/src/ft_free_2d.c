@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_free_2d.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: pdrettas <pdrettas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/07 18:08:54 by jorgutie          #+#    #+#             */
-/*   Updated: 2024/10/13 19:51:57 by jorgutie         ###   ########.fr       */
+/*   Created: 2024/12/10 17:10:40 by pauladretta       #+#    #+#             */
+/*   Updated: 2024/12/28 06:02:55 by pdrettas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isalpha(int c)
+void	ft_free_2d(char **matrix)
 {
-	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-	{
-		return (1);
-	}
-	else
-	{
-		return (0);
-	}
-}
-/*
-int main(void)
-{
-	char c = 92;
-	int r;
+	int	i;
 
-	r = ft_isalpha(c);
-	printf("%d",r);
+	if (matrix == NULL)
+	{
+		return ;
+	}
+	i = 0;
+	while (matrix != NULL && matrix[i] != NULL)
+	{
+		free(matrix[i]);
+		i++;
+	}
+	if (matrix != NULL)
+	{
+		free(matrix);
+	}
 }
-*/

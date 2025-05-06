@@ -1,35 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/07 18:08:54 by jorgutie          #+#    #+#             */
-/*   Updated: 2024/10/13 19:51:57 by jorgutie         ###   ########.fr       */
+/*   Created: 2024/10/14 12:47:33 by jorgutie          #+#    #+#             */
+/*   Updated: 2024/10/14 13:13:27 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isalpha(int c)
+void	ft_lstadd_front(t_list **lst, t_list *new)
 {
-	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-	{
-		return (1);
-	}
-	else
-	{
-		return (0);
-	}
+	if ((!lst) || (!new))
+		return ;
+	new->next = *lst;
+	*lst = new;
 }
-/*
-int main(void)
-{
-	char c = 92;
-	int r;
-
-	r = ft_isalpha(c);
-	printf("%d",r);
-}
-*/

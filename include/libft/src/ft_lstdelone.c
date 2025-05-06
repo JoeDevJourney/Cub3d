@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/07 18:08:54 by jorgutie          #+#    #+#             */
-/*   Updated: 2024/10/13 19:51:57 by jorgutie         ###   ########.fr       */
+/*   Created: 2024/10/14 16:04:11 by jorgutie          #+#    #+#             */
+/*   Updated: 2024/10/15 16:19:35 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isalpha(int c)
-{
-	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-	{
-		return (1);
-	}
-	else
-	{
-		return (0);
-	}
-}
-/*
-int main(void)
-{
-	char c = 92;
-	int r;
+/* Description
 
-	r = ft_isalpha(c);
-	printf("%d",r);
-}
+Takes as a parameter a node and frees the memory of
+the node’s content using the function ’del’ given
+as a parameter and free the node. The memory of
+’next’ must not be freed.
 */
+
+void	ft_lstdelone(t_list *lst, void (*del)(void*))
+{
+	if (!(lst && del))
+		return ;
+	del(lst->content);
+	free(lst);
+}

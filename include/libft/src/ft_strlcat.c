@@ -3,30 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/10 12:05:39 by dchrysov          #+#    #+#             */
-/*   Updated: 2024/12/12 14:13:54 by dchrysov         ###   ########.fr       */
+/*   Created: 2024/10/11 09:09:47 by jorgutie          #+#    #+#             */
+/*   Updated: 2024/10/13 19:10:28 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "libft.h"
 
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
+size_t	ft_strlcat(char *restrict dst, const char *restrict src, size_t dstsize)
 {
-	size_t	cat_len;
 	size_t	i;
+	size_t	result;
+	size_t	dstlen;
+	size_t	srclen;
 
-	if (dstsize <= ft_strlen(dst))
-		return (dstsize + ft_strlen(src));
-	cat_len = ft_strlen(dst);
+	dstlen = (size_t) ft_strlen((const char *)dst);
+	srclen = (size_t) ft_strlen((const char *)src);
+	result = srclen + dstlen;
+	if (dstsize <= dstlen)
+		return (srclen + dstsize);
 	i = 0;
-	while (src[i] != '\0' && cat_len < dstsize - 1)
+	while (src[i] && i < dstsize - dstlen - 1)
 	{
-		dst[cat_len] = src[i];
-		cat_len++;
+		dst[dstlen + i] = src[i];
 		i++;
 	}
-	dst[cat_len] = '\0';
-	return (ft_strlen(dst) + ft_strlen(&src[i]));
+	dst[dstlen + i] = '\0';
+	return (result);
 }
+/* int	main(void)
+{
+	char	dest[9] = "Hello";
+	char	src[] = " World!";
+	size_t	result;
+
+	result = ft_strlcat(dest, src, sizeof(dest));
+	printf("Concatenated string: %s\n", dest);
+	printf("Length tried to create: %zu\n", result);
+	return (0);
+} */

@@ -1,35 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/07 18:08:54 by jorgutie          #+#    #+#             */
-/*   Updated: 2024/10/13 19:51:57 by jorgutie         ###   ########.fr       */
+/*   Created: 2025/03/10 20:04:05 by pdrettas          #+#    #+#             */
+/*   Updated: 2025/04/02 01:02:56 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isalpha(int c)
+void	ft_free(char *str)
 {
-	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
+	if (str != NULL)
 	{
-		return (1);
-	}
-	else
-	{
-		return (0);
+		free(str);
+		str = NULL;
 	}
 }
-/*
-int main(void)
-{
-	char c = 92;
-	int r;
-
-	r = ft_isalpha(c);
-	printf("%d",r);
-}
-*/

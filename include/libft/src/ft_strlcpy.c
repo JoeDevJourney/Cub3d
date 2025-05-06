@@ -3,32 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/09 17:23:10 by dchrysov          #+#    #+#             */
-/*   Updated: 2024/12/12 14:14:00 by dchrysov         ###   ########.fr       */
+/*   Created: 2024/10/09 11:59:10 by jorgutie          #+#    #+#             */
+/*   Updated: 2024/10/13 19:10:48 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "libft.h"
 
-size_t	ft_strlcpy(char *dest, const char *src, size_t size)
+size_t	ft_strlcpy(char *restrict dst, const char *restrict src, size_t dstsize)
 {
 	size_t	i;
-	size_t	cpy_len;
 
 	i = 0;
-	if (size <= 0)
+	if (dstsize == 0)
 		return (ft_strlen(src));
-	if (size <= ft_strlen(src))
-		cpy_len = size - 1;
-	else
-		cpy_len = ft_strlen(src);
-	while (i < cpy_len)
+	while ((src[i] != '\0') && (i < dstsize - 1))
 	{
-		dest[i] = src[i];
+		dst[i] = src[i];
 		i++;
 	}
-	dest[i] = '\0';
+	dst[i] = '\0';
 	return (ft_strlen(src));
 }
+/* int main(void)
+{
+	char src[] = "Hello, 42!";
+	char dest[0];
+
+	size_t result = ft_strlcpy(dest, src, sizeof(dest));
+	printf("Source:      %s\n", src);
+	printf("Destination: %s\n", dest);
+	printf("Length of source: %zu\n", result);
+	return (0);
+} */

@@ -3,30 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/11 12:36:11 by dchrysov          #+#    #+#             */
-/*   Updated: 2024/12/12 14:11:46 by dchrysov         ###   ########.fr       */
+/*   Created: 2024/10/09 10:28:45 by jorgutie          #+#    #+#             */
+/*   Updated: 2024/10/13 19:59:23 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "libft.h"
 
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
 	unsigned char		*d;
 	const unsigned char	*s;
 	size_t				i;
 
-	d = (unsigned char *)dest;
-	s = (const unsigned char *)src;
-	i = 0;
-	if (d == NULL && s == NULL)
+	if (!dst && !src && n > 0)
 		return (NULL);
+	d = (unsigned char *)dst;
+	s = (unsigned char *)src;
+	i = 0;
 	while (i < n)
 	{
 		d[i] = s[i];
 		i++;
 	}
-	return (dest);
+	return (dst);
 }
+/*
+int main (void)
+{
+	char src[] = "Hola mama mia";
+	char dst[10];
+	
+	ft_memcpy(dst,src,6);
+	printf("%s", dst);
+}
+*/

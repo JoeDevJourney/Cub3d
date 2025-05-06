@@ -3,84 +3,72 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/14 11:09:39 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/03/28 11:24:27 by dchrysov         ###   ########.fr       */
+/*   Created: 2024/10/13 13:27:21 by jorgutie          #+#    #+#             */
+/*   Updated: 2024/10/13 17:44:17 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "libft.h"
 
-static int	ft_divisor(int num)
+static int	ft_len_n(int n)
 {
-	int	i;
-	int	div;
+	int	len;
 
-	i = 1;
-	div = 1;
-	if (num < 0)
-		num *= -1;
-	while (i <= (num / 10))
+	len = 0;
+	if (n <= 0)
+		len++;
+	while (n != 0)
 	{
-		i *= 10;
-		div *= 10;
+		len++;
+		n = n / 10;
 	}
-	return (div);
+	return (len);
 }
 
-static int	ft_count_dig(int num)
+static char	*ft_fill_str(char *str, int n, int len)
 {
-	int	count;
-
-	count = 0;
-	if (num <= 0)
-		count ++;
-	while (num != 0)
-	{
-		count++;
-		num /= 10;
-	}
-	return (count);
-}
-
-static char	*ft_inttochar(char *ptr, int n, int d)
-{
-	int	i;
-
-	i = 0;
+	str[len] = '\0';
+	if (n == 0)
+		str[0] = '0';
 	if (n < 0)
 	{
-		ptr[i++] = '-';
-		n *= -1;
+		str[0] = '-';
+		if (n == -2147483648)
+		{
+			str[--len] = '8';
+			n = -214748364;
+		}
+		n = - (n);
 	}
-	while (d > 0)
+	while (n > 0)
 	{
-		ptr[i++] = (n / d) + '0';
-		n %= d;
-		d /= 10;
+		len--;
+		str[len] = (n % 10) + '0';
+		n = n / 10;
 	}
-	ptr[i] = '\0';
-	return (ptr);
+	return (str);
 }
 
 char	*ft_itoa(int n)
 {
-	char	*result;
-	int		div;
+	int		len;
+	char	*ptr;
 
-	if (n == INT_MIN)
-		result = ft_strdup("-2147483648");
-	else
-	{
-		result = (char *)malloc(ft_count_dig(n) * sizeof(char) + 1);
-		if (result == NULL)
-			return (NULL);
-		else
-		{
-			div = ft_divisor(n);
-			result = ft_inttochar(result, n, div);
-		}
-	}
-	return (result);
+	len = ft_len_n(n);
+	ptr = (char *) malloc(sizeof(char) * ((size_t) len + 1));
+	if (ptr == NULL)
+		return (NULL);
+	ft_fill_str(ptr, n, len);
+	return (ptr);
 }
+
+// int main(void)
+// {
+// 	int num = -2147483648;
+// 	char *str = ft_itoa(num);
+// 	printf("Número como cadena: %s\n", str);
+// 	free(str);  // Liberar memoria después de usar el string
+// 	return 0;
+// }

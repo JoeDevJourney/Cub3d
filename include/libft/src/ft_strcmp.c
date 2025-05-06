@@ -1,35 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: pdrettas <pdrettas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/07 18:08:54 by jorgutie          #+#    #+#             */
-/*   Updated: 2024/10/13 19:51:57 by jorgutie         ###   ########.fr       */
+/*   Created: 2025/01/17 05:58:24 by pdrettas          #+#    #+#             */
+/*   Updated: 2025/02/07 04:46:47 by pdrettas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isalpha(int c)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-	{
-		return (1);
-	}
-	else
-	{
-		return (0);
-	}
-}
-/*
-int main(void)
-{
-	char c = 92;
-	int r;
+	int	i;
 
-	r = ft_isalpha(c);
-	printf("%d",r);
+	i = 0;
+	while (s1[i] && s1[i] == s2[i])
+	{
+		i++;
+	}
+	return (s1[i] - s2[i]);
 }
-*/

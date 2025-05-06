@@ -3,28 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/09 18:47:27 by dchrysov          #+#    #+#             */
-/*   Updated: 2024/12/12 14:14:21 by dchrysov         ###   ########.fr       */
+/*   Created: 2024/10/11 14:35:01 by jorgutie          #+#    #+#             */
+/*   Updated: 2024/10/13 19:11:07 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "libft.h"
 
-char	*ft_strnstr(const char *big, const char *little, size_t len)
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	if (*little == '\0')
-		return ((char *)big);
-	while (*big && len >= ft_strlen(little))
+	size_t	i;
+	size_t	needle_len;
+
+	if (needle[0] == '\0')
+		return ((char *)haystack);
+	needle_len = (size_t)(ft_strlen(needle));
+	i = 0;
+	while (haystack[i] && needle_len + i <= len)
 	{
-		if (*big == *little)
-		{
-			if (ft_strncmp(big, little, ft_strlen(little)) == 0)
-				return ((char *)big);
-		}
-		big++;
-		len--;
+		if (ft_strncmp(&haystack[i], needle, needle_len) == 0)
+			return ((char *)&haystack[i]);
+		i++;
 	}
 	return (NULL);
 }
+
+// int	main(void)
+// {
+// 	char	haystack[] = "Hel, world";
+// 	char	needle[] = ", wo";
+// 	char	*result;	
+// 	result = ft_strnstr(haystack, needle, 10);
+// 	if (result != NULL)
+// 		printf("Substring found: %s\n", result);
+// 	else
+// 		printf("Substring not found\n");
+// 	return (0);
+// }

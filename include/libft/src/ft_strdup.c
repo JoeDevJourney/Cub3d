@@ -3,28 +3,57 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/13 12:15:16 by dchrysov          #+#    #+#             */
-/*   Updated: 2025/02/12 12:49:35 by dchrysov         ###   ########.fr       */
+/*   Created: 2024/10/12 12:46:08 by jorgutie          #+#    #+#             */
+/*   Updated: 2025/04/02 01:04:08 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "libft.h"
 
-char	*ft_strdup(const char *s)
+char	*ft_strdup(const char *s1)
 {
-	char	*ptr;
-	int		len;
-	int		i;
+	char	*copy;
+	size_t	len;
 
-	len = ft_strlen(s);
-	ptr = malloc(sizeof(char) * (len + 1));
-	if (!ptr)
+	if (!s1)
 		return (NULL);
-	i = -1;
-	while (s[++i])
-		ptr[i] = s[i];
-	ptr[i] = '\0';
-	return (ptr);
+	len = (size_t)(ft_strlen(s1));
+	copy = (char *)malloc(sizeof(char) * (len + 1));
+	if (copy == NULL)
+		return (NULL);
+	ft_strlcpy(copy, s1, len + 1);
+	return (copy);
 }
+
+// int	main(void)
+// {
+// 	char	str[] = "Hello, 42!";
+// 	char	*std_dup;
+// 	char	*my_dup;
+
+// 	// Using strdup (standard function)
+// 	std_dup = strdup(str);
+// 	// Using ft_strdup (your function)
+// 	my_dup = ft_strdup(str);
+
+// 	// Compare both results
+// 	if (std_dup && my_dup)
+// 	{
+// 		printf("Original string:   %s\n", str);
+// 		printf("strdup:            %s\n", std_dup);
+// 		printf("ft_strdup:         %s\n", my_dup);
+// 		if (strcmp(std_dup, my_dup) == 0)
+// 			printf("Both strings are identical!\n");
+// 		else
+// 			printf("Strings are different!\n");
+// 	}
+// 	else
+// 		printf("Memory allocation failed.\n");
+
+// 	// Free allocated memory
+// 	free(std_dup);
+// 	free(my_dup);
+// 	return (0);
+// }

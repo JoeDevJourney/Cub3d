@@ -3,38 +3,77 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/11 14:27:01 by dchrysov          #+#    #+#             */
-/*   Updated: 2024/12/12 14:11:44 by dchrysov         ###   ########.fr       */
+/*   Created: 2024/10/10 09:22:06 by jorgutie          #+#    #+#             */
+/*   Updated: 2024/10/13 20:48:53 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "libft.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+/* void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	unsigned char			*d;
-	const unsigned char		*s;
-	size_t					i;
+	unsigned char	*d;
+	unsigned char	*s;
+	unsigned char	*lastd;
+	unsigned char	*lasts;
 
-	i = 0;
-	s = (const unsigned char *)src;
 	d = (unsigned char *)dst;
-	if (d == NULL && s == NULL)
-		return (NULL);
-	while (i < len)
+	s = (unsigned char *)src;
+	if (!dst && !src)
+		return (0);
+	if (d < s)
+		while (len--)
+			*d++ = *s++;
+	else
 	{
-		if (d < s)
-		{
-			d[i] = s[i];
-			i++;
-		}
-		else
-		{
-			d[len - i - 1] = s[len - i - 1];
-			i ++;
-		}
+		lasts = s + (len - 1);
+		lastd = d + (len - 1);
+		while (len--)
+			*lastd-- = *lasts--;
 	}
 	return (dst);
+} */
+
+void	*ft_memmove(void *dest, const void *src, size_t n)
+{
+	int	i;
+
+	if (n == 0)
+		return (dest);
+	if (!dest && !src)
+		return (NULL);
+	if (dest > src)
+	{
+		i = (int)n - 1;
+		while (i >= 0)
+		{
+			*(char *)(dest + i) = *(char *)(src + i);
+			i--;
+		}
+	}
+	else
+	{
+		i = 0;
+		while (i < (int)n)
+		{
+			*(char *)(dest + i) = *(char *)(src + i);
+			i++;
+		}
+	}
+	return (dest);
 }
+/* int	main(void)
+{
+	char	src[] = "abcdefg";
+	char	src2[] = "abcdefg";
+	ft_memmove(src ,src+2,5);
+	printf("This is mine:      %s",src);
+	printf("%c",'\n');
+
+	memmove(src2 ,src2+2,5);
+	printf("This is memmove:   %s",src2);
+	printf("%c",'\n');
+	return (0);
+} */

@@ -1,35 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_swap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: pdrettas <pdrettas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/07 18:08:54 by jorgutie          #+#    #+#             */
-/*   Updated: 2024/10/13 19:51:57 by jorgutie         ###   ########.fr       */
+/*   Created: 2024/12/11 04:02:56 by pauladretta       #+#    #+#             */
+/*   Updated: 2024/12/28 06:05:40 by pdrettas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-int	ft_isalpha(int c)
+void	ft_swap(int *a, int *b)
 {
-	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-	{
-		return (1);
-	}
-	else
-	{
-		return (0);
-	}
-}
-/*
-int main(void)
-{
-	char c = 92;
-	int r;
+	int	temp;
 
-	r = ft_isalpha(c);
-	printf("%d",r);
+	temp = *a;
+	*a = *b;
+	*b = temp;
 }
-*/

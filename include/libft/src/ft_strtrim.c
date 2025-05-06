@@ -3,35 +3,57 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/14 16:43:44 by dchrysov          #+#    #+#             */
-/*   Updated: 2024/12/12 14:14:30 by dchrysov         ###   ########.fr       */
+/*   Created: 2024/10/12 15:13:55 by jorgutie          #+#    #+#             */
+/*   Updated: 2024/10/13 22:04:01 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "libft.h"
 
-char	*ft_strtrim(const char *s1, const char *set)
+static int	ft_is_in(char c, const char *set)
 {
-	const char	*start;
-	const char	*end;
-	char		*res;
-	size_t		len;
-
-	len = 0;
-	start = s1;
-	end = s1 + ft_strlen(s1) - 1;
-	if (s1 == NULL || set == NULL)
-		return (NULL);
-	while (*start && ft_strchr(set, *start))
-		start++;
-	while (end > start && ft_strchr(set, *end))
-		end--;
-	len = end - start + 1;
-	res = (char *)malloc(len + 1);
-	if (res == NULL)
-		return (NULL);
-	ft_strlcpy(res, start, len + 1);
-	return (res);
+	while (*set)
+	{
+		if (c == *set)
+			return (1);
+		set++;
+	}
+	return (0);
 }
+
+char	*ft_strtrim(char const *s1, char const *set)
+{
+	int		len;
+	int		start;
+	int		end;
+	char	*result;
+
+	if (!(s1) || !(set))
+		return (NULL);
+	start = 0;
+	while (s1[start] && ft_is_in(s1[start], set))
+		start++;
+	end = (ft_strlen(s1)) - 1;
+	while (end > start && ft_is_in(s1[end], set))
+		end--;
+	len = (end - start + 1);
+	result = (char *)malloc(sizeof(char) * (len + 1));
+	if (result == NULL)
+		return (NULL);
+	ft_strlcpy(result, s1 + start, len + 1);
+	result[len] = '\0';
+	return (result);
+}
+
+// int main(void)
+// {
+//     char *result;
+
+//     result = ft_strtrim("lorem ipsum dolor sit amet", "tema si");
+//     printf("Trimmed string: '%s'\n", result); // Output: "Hello, World!"
+
+//     free(result);
+//     return (0);
+// }

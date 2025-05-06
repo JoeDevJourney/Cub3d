@@ -3,25 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dchrysov <dchrysov@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/11 10:51:48 by dchrysov          #+#    #+#             */
-/*   Updated: 2024/12/12 14:10:33 by dchrysov         ###   ########.fr       */
+/*   Created: 2024/10/09 09:44:40 by jorgutie          #+#    #+#             */
+/*   Updated: 2024/10/13 14:20:46 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/libft.h"
+#include "libft.h"
 
 void	ft_bzero(void *s, size_t n)
 {
 	unsigned char	*ptr;
 	size_t			i;
 
-	ptr = (unsigned char *)s;
+	ptr = s;
 	i = 0;
 	while (i < n)
 	{
 		ptr[i] = 0;
 		i++;
 	}
+	return ;
 }
+
+// int main(void)
+// {
+// 	char str[30]= "abcd efgh";
+// 	ft_bzero(str,3);	
+// 	int j = 0;
+// 	while(j < 30)  // Change to iterate through the WHOLE buffer
+// 	{
+// 		printf("%d ", str[j]);  // Print each byte as AN INTEGER
+// 		j++;				
+// 	}
+// 	printf("\n");
+
+// 	return 0;
+// }
