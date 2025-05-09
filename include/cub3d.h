@@ -6,7 +6,7 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:27:29 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/09 16:30:58 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/09 16:55:35 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,6 @@ void			malloc_error(void);
 void			init_ray(t_ray *ray, t_cub *cub, int x);
 void			perform_dda(t_ray *ray, t_cub *cub);
 void			calculate_projection(t_ray *ray);
-
+// render
+void			render_textured_column(t_cub *cub, t_ray *ray, int x);
 #endif
