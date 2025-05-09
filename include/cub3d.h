@@ -6,7 +6,7 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:27:29 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/06 19:30:35 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/09 13:16:13 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,51 @@
 
 # define WIDTH 1980
 # define HEIGHT 1080
+# define TEXTURE_SIZE 64
+
+typedef enum e_dir
+{
+	NORTH = 0,
+	SOUTH = 1,
+	WEST = 2,
+	EAST = 3,
+}			t_dir;
+
+typedef struct s_ray
+{
+	double			camera_x;
+	double			ray_dir_x;
+	double			day_dir_y;
+	int				map_x;
+	int				map_y;
+	double			delta_x;
+	double			delta_y;
+	double			side_x;
+	double			side_y;
+	int				step_x;
+	int				step_y;
+	int				hit;
+	int				side;
+	double			perp_dist;
+	int				line_height;
+	int				draw_start;
+	int				draw_end;
+}	t_ray;
 
 typedef struct s_cub
 {
 	void			*mlx;
-	void			*window;
 	mlx_t			*mlx_connect;
 	mlx_image_t		*img;
-	char			*img_buffer;
 	char			*img_addr;
+	uint32_t		*textures[4]; //FOR NORTH EAST SOUTH WEST
+	int				**map;
+	double			pos_x;
+	double			pos_y;
+	double			dir_x;
+	double			dir_y;
+	double			plane_x;
+	double			plane_y;
 }			t_cub;
 
 // Utils
