@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jorgutie <jorgutie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 18:00:10 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/06 20:20:10 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/11 20:43:22 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #define PARSER_H
 
 
-#include "../libft/inc/libft.h"
+#include "libft.h"
 #include <fcntl.h>
-#include <unistd.h>›
+#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "cub3d.h"

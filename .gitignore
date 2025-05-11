@@ -8,3 +8,4 @@ dist/
 *.swp
 ./MLX42
 .vscode
+*.a
