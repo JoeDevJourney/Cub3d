@@ -1,78 +1,82 @@
 
+# Library Name
+NAME        = cub3D
 
-# ─────────── Variables ───────────────────────────────────────────────────────
-NAME       = cub3D
-SRCDIR     = src
-PARSERDIR  = $(SRCDIR)/parser
-OBJDIR     = obj
-INCDIR     = include
-LIBFTDIR   = $(INCDIR)/libft
-LIBMLX     = MLX42
-LIB        = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
+# Libraries
+LIBFT_DIR   = include/libft
+LIBFT       = $(LIBFT_DIR)/libft.a
 
-# Source files (full paths)
-SRCS       = $(SRCDIR)/main.c \
-             $(PARSERDIR)/parser.c
+MLX_DIR     = MLX42
+MLX_FLAGS   = $(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
-# Object files: strip directories, then prefix with obj/
-OBJS       = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
+# Compiler and Flags
+CC          = cc
+CFLAGS      = -Wall -Wextra -Werror
+RM          = rm -f
 
-LIBFT      = $(LIBFTDIR)/libft.a
+# Colors for terminal output
+GREEN  = \033[0;32m
+BLUE   = \033[0;34m
+ORANGE = \033[38;5;214m
+RED    = \033[0;31m
+YELLOW = \033[0;33m
+RESET  = \033[0m
+
+# Directories
+SRC_DIR     = src
+OBJ_DIR     = obj
+INC_DIR     = include
 
 # Include flags
-CFLAGS    := -Wall -Wextra -Werror -I$(INCDIR) -I$(LIBFTDIR)/inc
+INC         = -I$(INC_DIR) -I$(LIBFT_DIR)/inc -I$(MLX_DIR)/include
 
-# ─────────── Default target ──────────────────────────────────────────────────
-all: gitclone libmlx $(LIBFT) $(NAME)
+# Source files
+SRC_FILES   = main.c \
+              parser/parser.c \
+              parser/validation.c
 
-# ─────────── MLX & libft targets ────────────────────────────────────────────
-gitclone:
-	@if [ ! -d "$(LIBMLX)" ]; then \
-	  echo "Cloning MLX42..."; \
-	  git clone https://github.com/codam-coding-college/MLX42.git $(LIBMLX); \
-	fi
+SRCS        = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
+OBJS        = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
-libmlx: $(LIB)
+# ────────────────────────────────────────────────────────────────────────────────
+# Default target
+all: $(NAME)
 
-$(LIB):
-	@cmake $(LIBMLX) -B $(LIBMLX)/build
-	@make -C $(LIBMLX)/build
+# Link executable
+$(NAME): $(LIBFT) $(MLX_DIR)/build/libmlx42.a $(OBJS)
+	@echo "$(ORANGE)Linking $(NAME)...$(RESET)"
+	@$(CC) $(CFLAGS) $(INC) $(OBJS) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
+	@echo "$(GREEN)** $(NAME) Compiled successfully! **$(RESET)"
 
+# Build libft
 $(LIBFT):
-	$(MAKE) -C $(LIBFTDIR)
+	@make -C $(LIBFT_DIR)
 
-# ─────────── Build executable ───────────────────────────────────────────────
-$(NAME): $(OBJDIR) $(OBJS) $(LIBFT)
-	@echo "\033[33mCompiling $(NAME)...\033[0m"
-	$(CC) $(CFLAGS) -o $@ $(OBJS) -L$(LIBFTDIR) -lft $(LIB)
-	@echo "\033[32m$(NAME) built successfully!\033[0m"
+# Build MLX42
+$(MLX_DIR)/build/libmlx42.a:
+	@cmake $(MLX_DIR) -B $(MLX_DIR)/build
+	@make -C $(MLX_DIR)/build
 
-# ─────────── Object directory ────────────────────────────────────────────────
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
+# Compile .c → .o
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
+	@echo "$(BLUE)Compiling $< ...$(RESET)"
+	@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
-# ─────────── Explicit rules for each .o ─────────────────────────────────────
-# obj/main.o ← src/main.c
-$(OBJDIR)/main.o: $(SRCDIR)/main.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-# obj/parser.o ← src/parser/parser.c
-$(OBJDIR)/parser.o: $(PARSERDIR)/parser.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-# ─────────── Cleanup ────────────────────────────────────────────────────────
+# ────────────────────────────────────────────────────────────────────────────────
+# Cleanup
 clean:
-	@echo "\033[33mCleaning build files…\033[0m"
-	rm -rf $(OBJDIR)
-	rm -rf $(LIBMLX)
-	$(MAKE) -C $(LIBFTDIR) clean
+	@make -C $(LIBFT_DIR) clean
+	@make -C $(MLX_DIR)/build clean
+	@$(RM) -r $(OBJ_DIR)
+	@echo "$(YELLOW)** Cleaned object files **$(RESET)"
 
 fclean: clean
-	@echo "\033[33mRemoving binaries…\033[0m"
-	rm -f $(NAME)
-	$(MAKE) -C $(LIBFTDIR) fclean
+	@make -C $(LIBFT_DIR) fclean
+	@$(RM) $(NAME)
+	@echo "$(RED)** Removed $(NAME) **$(RESET)"
 
 re: fclean all
 
-# ─────────── Phony targets ──────────────────────────────────────────────────
-.PHONY: all clean fclean re gitclone libmlx
+# ────────────────────────────────────────────────────────────────────────────────
+.PHONY: all clean fclean re

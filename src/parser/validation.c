@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:38:21 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/12 12:05:32 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/12 14:10:21 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,36 @@ static int count_player(char **map)
 // Check that cell at (y,x) is enclosed by walls or valid chars
 static int check_surroundings(char **map, int y, int x)
 {
-	if (!map[y - 1] || !map[y + 1] || x == 0)
+	int rows = 0;
+	int len;
+
+	/* count total rows */
+	while (map[rows])
+		rows++;
+	/* above */
+	if (y <= 0)
 		return (0);
-	if (ft_strchr(" 1NSEW", map[y - 1][x])
-	 && ft_strchr(" 1NSEW", map[y + 1][x])
-	 && ft_strchr(" 1NSEW", map[y][x - 1])
-	 && ft_strchr(" 1NSEW", map[y][x + 1]))
-		return (1);
-	return (0);
+	len = ft_strlen(map[y - 1]);
+	if (x >= len || map[y - 1][x] == ' ')
+		return (0);
+
+	/* below */
+	if (y >= rows - 1)
+		return (0);
+	len = ft_strlen(map[y + 1]);
+	if (x >= len || map[y + 1][x] == ' ')
+		return (0);
+
+	/* left */
+	if (x <= 0 || map[y][x - 1] == ' ')
+		return (0);
+
+	/* right */
+	len = ft_strlen(map[y]);
+	if (x >= len - 1 || map[y][x + 1] == ' ')
+		return (0);
+
+	return (1);
 }
 
 // Validate textures and colors presence */

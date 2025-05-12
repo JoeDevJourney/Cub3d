@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:57:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/11 20:46:40 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/12 13:48:17 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,13 @@ void	init_config(t_config *cfg)
 	cfg->map_height = 0;
 }
 
-// To parse texture
+// Validate a single color component (0-255)
+static int is_valid_component(int c)
+{
+	return (c >= 0 && c <= 255);
+}
+
+// To parse texture line (NO, SO, WE, EA)
 static void	parse_texture(t_config *cfg, const char *line)
 {
 	char **parts;
@@ -45,12 +51,6 @@ static void	parse_texture(t_config *cfg, const char *line)
 	else if (!ft_strcmp(parts[0], "EA"))
 		cfg->texture_ea = ft_strdup(parts[1]);
 	ft_free_2d(parts);
-}
-
-// Validate a single color component (0-255)
-static int is_valid_component(int c)
-{
-	return (c >= 0 && c <= 255);
 }
 
 // To parse the colors (Ceiling and Floor)
@@ -79,22 +79,36 @@ static int	parse_color(t_config *cfg, const char *line)
 	return (0);
 }
 
-// Add a map line to cfg->map array, return 0 on success */
-static int	add_map_line(t_config *cfg, const char *line)
+// Add a map line to cfg->map array, return 0 on success
+static int add_map_line(t_config *cfg, const char *line)
 {
-	char	**new_map;
-	int		count;
+	char **new_map;
+	int    count;
+	int    i;
 
+	/* count existing rows */
 	count = 0;
 	while (cfg->map && cfg->map[count])
 		count++;
+
+	/* allocate space for old rows + new row + NULL terminator */
 	new_map = malloc(sizeof(char *) * (count + 2));
 	if (!new_map)
 		return (-1);
-	new_map[count + 1] = NULL;
-	while (count--)
-		new_map[count] = cfg->map[count];
-	new_map[0] = ft_strdup(line);
+
+	/* forward-copy all old pointers exactly once */
+	i = 0;
+	while (i < count)
+	{
+		new_map[i] = cfg->map[i];
+		i++;
+	}
+
+	/* append the strdup’ed new line at index `count` */
+	new_map[i]     = ft_strdup(line);
+	new_map[i + 1] = NULL;
+
+	/* free only the old pointer array (not the strings themselves) */
 	free(cfg->map);
 	cfg->map = new_map;
 	return (0);
