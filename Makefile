@@ -74,7 +74,8 @@ clean:
 fclean: clean
 	@make -C $(LIBFT_DIR) fclean
 	@$(RM) $(NAME)
-	@echo "$(RED)** Removed $(NAME) **$(RESET)"
+	@rm -rf $(MLX_DIR)
+	@echo "$(RED)** Removed $(NAME) and MLX42 directory **$(RESET)"
 
 re: fclean all
 
