@@ -6,7 +6,7 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 15:29:42 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/09 16:56:16 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/15 14:24:26 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	render_frame(t_cub *cub)
 		init_ray(&ray, cub, x);
 		perform_dda(&ray, cub);
 		calculate_projection(&ray);
-		render_column(cub, &ray, x);
+		// render_column(cub, &ray, x);
 		render_textured_column(cub, &ray, x);
 		x++;
 	}

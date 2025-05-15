@@ -6,16 +6,11 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:06:48 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/09 12:12:44 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/15 16:04:40 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
-
-void	close_window(void *param)
-{
-	clean_exit(param);
-}
 
 void	clean_exit(void *param)
 {
@@ -39,4 +34,15 @@ void	create_image(t_cub *image)
 		malloc_error();
 	}
 	image->img_addr = (char *)image->img->pixels;
+}
+
+void	handle_input(void *param)
+{
+	t_cub	*cub;
+
+	cub = (t_cub *)param;
+	if (mlx_is_key_down(cub->mlx_connect, MLX_KEY_ESCAPE))
+		clean_exit(cub);
+	render_frame(cub);
+	moving_forward_backward(cub);
 }

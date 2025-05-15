@@ -6,7 +6,7 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:27:29 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/09 16:55:35 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/15 16:05:02 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define CUB3D_H
 
 # include "../MLX42/include/MLX42/MLX42.h"
-# include "../libft/include/libft.h"
+# include "libft/include/libft.h"
 # include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -80,11 +80,18 @@ typedef struct s_tex
 
 // Utils
 void			malloc_error(void);
+void			init_dummy_textures(t_cub *cub);
 // Events
+void			clean_exit(void *param);
+void			create_image(t_cub *image);
+void			handle_input(void *param);
 // raycast
 void			init_ray(t_ray *ray, t_cub *cub, int x);
 void			perform_dda(t_ray *ray, t_cub *cub);
 void			calculate_projection(t_ray *ray);
 // render
 void			render_textured_column(t_cub *cub, t_ray *ray, int x);
+void			render_frame(t_cub *cub);
+// moving
+void			moving_forward_backward(t_cub *cub);
 #endif

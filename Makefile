@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -g -Wall -Werror -Wextra -I$(INCDIR) -I$(LIBFTDIR)/include  #-fsanitize=address
+CFLAGS = -g -Wall -Wextra -Werror -Iinclude -I./MLX42/include -I./libft/include
 MAKEFLAGS += -s
 
 SRCDIR = ./src
@@ -9,12 +9,13 @@ LIBFTDIR = ./include/libft
 LIBMLX = ./MLX42
 LIB = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
-SRCS = 
+SRCS = $(addprefix $(SRCDIR)/, event.c raycast.c render_column.c render_frame.c utils.c moving.c)
+SRCS += main.c
 OBJS = $(addprefix $(OBJDIR)/, $(notdir $(SRCS:.c=.o)))
 LIBFT = $(LIBFTDIR)/libft.a
 NAME = cub3D
 
-all: gitclone libmlx libft $(NAME)
+all: gitclone libmlx $(LIBFT) $(NAME)
 
 gitclone:	
 	@if [ ! -d "$(LIBMLX)" ]; then \
@@ -24,12 +25,15 @@ gitclone:
 
 libmlx: $(LIBMLX)/build/libmlx42.a
 
+libft:
+	$(MAKE) -C $(LIBFTDIR)
+
 $(LIBMLX)/build/libmlx42.a: $(LIBMLX)
 	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build
 
 $(NAME): $(OBJDIR) $(OBJS) $(LIBFT)
 	@echo "\033[33mCompilating $(NAME)...\033[0m"
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L$(LIBFTDIR) -lft
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L$(LIBFTDIR) -lft $(LIB)
 	@echo "$(NAME) compiled \033[32msuccessfully\033[0m!"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
