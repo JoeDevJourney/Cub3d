@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:57:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/16 17:12:04 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/16 20:48:51 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 // helper to print and return error
 static int	report_err(int line, const char *msg)
 {
-    ft_putstr_fd("Error (line ", 2);
-    ft_putnbr_fd(line, 2);
-    ft_putstr_fd("): ", 2);
-    ft_putendl_fd(msg, 2);
-    return (-1);
+	ft_putstr_fd("Error (line ", 2);
+	ft_putnbr_fd(line, 2);
+	ft_putstr_fd("): ", 2);
+	ft_putendl_fd((char *)msg, 2);
+	return (-1);
 }
 
 // Check the file has a ".cub" extension
@@ -71,14 +71,15 @@ static int parse_texture(t_config *cfg, const char *line, int line_num)
 {
 	char **parts;
 	int	count;
+	// char **target_texture = NULL;
 
 	parts = ft_split(line, ' ');
 	count = 0;
 	while (parts[count])
 		count++;
-    if (count != 2)
-        return (ft_free_2d(parts), report_err(line_num,
-            "invalid texture format"));	
+	if (count != 2)
+		return (ft_free_2d(parts), report_err(line_num,
+				"invalid texture format"));
 	if (!ft_strcmp(parts[0], "NO") && cfg->texture_no == NULL)
 		cfg->texture_no = ft_strdup(parts[1]);
 	else if (!ft_strcmp(parts[0], "SO") && cfg->texture_so == NULL)
@@ -89,24 +90,64 @@ static int parse_texture(t_config *cfg, const char *line, int line_num)
 		cfg->texture_ea = ft_strdup(parts[1]);
 	else
 		return (ft_free_2d(parts), report_err(line_num, 
-			"unknown or duplicate texture ID"));
+				"unknown or duplicate texture ID"));
+
 	if (cfg->texture_no == NULL || cfg->texture_so == NULL
 		|| cfg->texture_we == NULL || cfg->texture_ea == NULL)	
-		return (ft_free_2d(parts),report_err(line_num,
+		return (ft_free_2d(parts), report_err(line_num,
 				"memory allocation failed"));
+	
+	// *target_texture = ft_strdup(parts[1]);
+	// if (*target_texture == NULL)
+	// 	return (ft_free_2d(parts), report_err(line_num,
+	// 			"memory allocation failed"));
+				
 	return (ft_free_2d(parts), 0);
 }
 
-// To parse the colors (Ceiling and Floor)
-static int	parse_color(t_config *cfg, const char *line, int line_num) // TODO: Modifications
+/* Check if string is numeric */
+static int	is_numeric(const char *s)
 {
-	char    **parts;
-	t_color  col;
+	if (s == NULL)
+		return (0);
+	if (*s == '\0')
+		return (0);
+	while (*s != '\0')
+	{
+		if (ft_isdigit(*s) == 0)
+			return (0);
+		s++;
+	}
+	return (1);
+}
+
+// To parse the colors (Ceiling and Floor)
+static int	parse_color(t_config *cfg, const char *line, int line_num)
+{
+	char	**parts;
+	t_color	col;
 	int		count;
 	int		i;
 	const char	*p;
 
-	parts = ft_split(line + 2, ',');
+	p = line + 1;
+	if (*p != ' ')
+		return (report_err(line_num, "missing space after color ID"));
+	parts = ft_split(p + 1, ',');
+	count = 0;
+	while (parts[count])
+		count++;
+	if (count != 3)
+		return (ft_free_2d(parts), report_err(line_num,
+			"color must have 3 values"));
+	i = 0;
+	while (i < 3)
+	{
+		if (is_numeric(parts[i]) == 0)
+			return (ft_free_2d(parts), report_err(line_num,
+				"non-numeric color value"));
+		i++;
+	}
 	col.r = ft_atoi(parts[0]);
 	col.g = ft_atoi(parts[1]);
 	col.b = ft_atoi(parts[2]);
@@ -124,36 +165,32 @@ static int	parse_color(t_config *cfg, const char *line, int line_num) // TODO: M
 	return (0);
 }
 
+
 // Add a map line to cfg->map array, return 0 on success
 static int add_map_line(t_config *cfg, const char *line)
 {
-	char **new_map;
-	int    count;
-	int    i;
+	char	**new_map;
+	int		count;
+	int		i;
 
-	/* count existing rows */
 	count = 0;
 	while (cfg->map && cfg->map[count])
 		count++;
 
-	/* allocate space for old rows + new row + NULL terminator */
 	new_map = malloc(sizeof(char *) * (count + 2));
 	if (!new_map)
 		return (-1);
 
-	/* forward-copy all old pointers exactly once */
 	i = 0;
 	while (i < count)
 	{
 		new_map[i] = cfg->map[i];
 		i++;
 	}
+	new_map[i] = ft_strdup(line);
+	i++;
+	new_map[i] = NULL;
 
-	/* append the strdup’ed new line at index `count` */
-	new_map[i]     = ft_strdup(line);
-	new_map[i + 1] = NULL;
-
-	/* free only the old pointer array (not the strings themselves) */
 	free(cfg->map);
 	cfg->map = new_map;
 	return (0);
@@ -204,7 +241,7 @@ int	parse_file(int fd, t_config *cfg)
 		}
 		else if (line[0] != '\0')
 		{
-			map_started = 1;
+			map_started = (map_started * 0) + 1;
 			if (add_map_line(cfg, line) < 0)
 				return (free(line), -1);
 		}
@@ -222,7 +259,7 @@ int	parser(const char *path, t_config *cfg)
 
 	init_config(cfg);
 	if (!check_extension(path))
-    	return (report_err(0,"file must end in .cub"));
+		return (report_err(0,"file must end in .cub"));
 	fd = open(path, O_RDONLY);
 	if(fd < 0)
 		return (perror("Error: openning file .club"), -1);

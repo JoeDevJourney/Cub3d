@@ -73,7 +73,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 # Cleanup
 clean:
 	@make -C $(LIBFT_DIR) clean
-	@make -C $(MLX_DIR)/build clean
 	@$(RM) -r $(OBJ_DIR)
 	@echo "$(YELLOW)** Cleaned object files **$(RESET)"
 
