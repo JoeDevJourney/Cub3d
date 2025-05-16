@@ -3,14 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorgutie <jorgutie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:57:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/12 13:48:17 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/16 14:57:35 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+// Check the file has a ".cub" extension
+// Null, at least "x.cub", compare the ".cub"
+static int	check_extension(const char *path)
+{
+	int		len;
+	char	*suffix;
+
+	if (!path)
+		return (0);
+	/* 2) Must be at least "x.cub" (5 chars) */
+	len = ft_strlen(path);
+	if (len <= 4)
+		return (0);
+	suffix = (char *)path + (len - 4);
+	/* 4) Compare to ".cub" */
+	if (ft_strcmp(suffix, ".cub") != 0)
+		return (0);
+	return (1);
+}
 
 // To initialize the Config Structure
 void	init_config(t_config *cfg)
@@ -134,6 +154,8 @@ static int	process_line(t_config *cfg, char *line)
 	return (0);
 }
 
+
+
 // To read the .cub file and add the info for the config structure
 int	parser(const char *path, t_config *cfg)
 {
@@ -141,6 +163,8 @@ int	parser(const char *path, t_config *cfg)
 	char *line;
 
 	init_config(cfg);
+	if (!check_extension(path))
+    	return (ft_putendl_fd("Error: file must end in .cub", 2), 0);
 	fd = open(path, O_RDONLY);
 	if(fd < 0)
 		return (perror("Error: openning file .club"), -1);

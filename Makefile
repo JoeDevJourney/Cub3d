@@ -7,6 +7,7 @@ LIBFT_DIR   = include/libft
 LIBFT       = $(LIBFT_DIR)/libft.a
 
 MLX_DIR     = MLX42
+MLX_REPO    = https://github.com/codam-coding-college/MLX42.git
 MLX_FLAGS   = $(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
 # Compiler and Flags
@@ -52,8 +53,13 @@ $(NAME): $(LIBFT) $(MLX_DIR)/build/libmlx42.a $(OBJS)
 $(LIBFT):
 	@make -C $(LIBFT_DIR)
 
-# Build MLX42
-$(MLX_DIR)/build/libmlx42.a:
+# Clone MLX42 if missing
+$(MLX_DIR):
+	@echo "→ MLX42 not found, cloning into $(MLX_DIR)..."
+	@git clone $(MLX_REPO) $(MLX_DIR)
+
+# Build MLX42 static lib (depends on having MLX_DIR)
+$(MLX_DIR)/build/libmlx42.a: $(MLX_DIR)
 	@cmake $(MLX_DIR) -B $(MLX_DIR)/build
 	@make -C $(MLX_DIR)/build
 
