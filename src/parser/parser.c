@@ -6,11 +6,21 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:57:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/16 14:57:35 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/16 16:25:09 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+// helper to print and return error
+static int	report_err(int line, const char *msg)
+{
+    ft_putstr_fd("Error (line ", 2);
+    ft_putnbr_fd(line, 2);
+    ft_putstr_fd("): ", 2);
+    ft_putendl_fd(msg, 2);
+    return (-1);
+}
 
 // Check the file has a ".cub" extension
 // Null, at least "x.cub", compare the ".cub"
@@ -57,11 +67,17 @@ static int is_valid_component(int c)
 }
 
 // To parse texture line (NO, SO, WE, EA)
-static void	parse_texture(t_config *cfg, const char *line)
+static void	parse_texture(t_config *cfg, const char *line, int line_num)
 {
 	char **parts;
+	int	count = 0;
 
 	parts = ft_split(line, ' ');
+	while (parts[count]) count++;
+    if (count != 2)
+        return (ft_free_2d(parts), report_err(line_num,
+            "invalid texture format"));
+	
 	if (!ft_strcmp(parts[0], "NO"))
 		cfg->texture_no = ft_strdup(parts[1]);
 	else if (!ft_strcmp(parts[0], "SO"))
@@ -135,7 +151,7 @@ static int add_map_line(t_config *cfg, const char *line)
 }
 
 // Process a single non-empty line, return 0 on success
-static int	process_line(t_config *cfg, char *line)
+static int	process_line(t_config *cfg, char *line, int line_num)
 {
 	int	status;
 
@@ -154,30 +170,50 @@ static int	process_line(t_config *cfg, char *line)
 	return (0);
 }
 
+// Read all lines, dispatch element vs map, report errors
+int	parse_file(int fd, t_config *cfg)
+{
+	int		map_started;
+	int		line_num;
+	char	*line;
+
+	map_started = 0;
+	line_num = 0;
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		line_num++;
+		if (line[0] != '\0' && is_element_line(line))
+		{
+			if (process_line(cfg, line, line_num) < 0)
+				return (free(line), -1);			
+		}
+		else if (line[0] != '\0')
+		{
+			map_started = 1;
+			if (add_map_line(cfg, line) < 0)
+				return (free(line), -1);
+		}
+		free(line);
+	}
+	return (0);
+}
 
 
 // To read the .cub file and add the info for the config structure
 int	parser(const char *path, t_config *cfg)
 {
 	int fd;
-	char *line;
+	int ret;
 
 	init_config(cfg);
 	if (!check_extension(path))
-    	return (ft_putendl_fd("Error: file must end in .cub", 2), 0);
+    	return (report_err(0,"file must end in .cub"));
 	fd = open(path, O_RDONLY);
 	if(fd < 0)
 		return (perror("Error: openning file .club"), -1);
-	while ((line = get_next_line(fd)) != NULL)
-	{
-		if (line[0] != '\0' && process_line(cfg, line) < 0)
-		{
-			free(line);
-			close(fd);
-			return (-1);
-		}
-		free(line);
-	}
+	ret = parse_file(fd, cfg);
 	close(fd);
+	if (ret < 0)
+		return (-1);
 	return (validate_cfg(cfg));
 }
