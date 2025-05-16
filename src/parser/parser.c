@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:57:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/16 16:25:09 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/16 17:12:04 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,35 +67,44 @@ static int is_valid_component(int c)
 }
 
 // To parse texture line (NO, SO, WE, EA)
-static void	parse_texture(t_config *cfg, const char *line, int line_num)
+static int parse_texture(t_config *cfg, const char *line, int line_num)
 {
 	char **parts;
-	int	count = 0;
+	int	count;
 
 	parts = ft_split(line, ' ');
-	while (parts[count]) count++;
+	count = 0;
+	while (parts[count])
+		count++;
     if (count != 2)
         return (ft_free_2d(parts), report_err(line_num,
-            "invalid texture format"));
-	
-	if (!ft_strcmp(parts[0], "NO"))
+            "invalid texture format"));	
+	if (!ft_strcmp(parts[0], "NO") && cfg->texture_no == NULL)
 		cfg->texture_no = ft_strdup(parts[1]);
-	else if (!ft_strcmp(parts[0], "SO"))
+	else if (!ft_strcmp(parts[0], "SO") && cfg->texture_so == NULL)
 		cfg->texture_so = ft_strdup(parts[1]);
-	else if (!ft_strcmp(parts[0], "WE"))
+	else if (!ft_strcmp(parts[0], "WE") && cfg->texture_we == NULL)
 		cfg->texture_we = ft_strdup(parts[1]);
-	else if (!ft_strcmp(parts[0], "EA"))
+	else if (!ft_strcmp(parts[0], "EA") && cfg->texture_ea == NULL)
 		cfg->texture_ea = ft_strdup(parts[1]);
-	ft_free_2d(parts);
+	else
+		return (ft_free_2d(parts), report_err(line_num, 
+			"unknown or duplicate texture ID"));
+	if (cfg->texture_no == NULL || cfg->texture_so == NULL
+		|| cfg->texture_we == NULL || cfg->texture_ea == NULL)	
+		return (ft_free_2d(parts),report_err(line_num,
+				"memory allocation failed"));
+	return (ft_free_2d(parts), 0);
 }
 
 // To parse the colors (Ceiling and Floor)
-static int	parse_color(t_config *cfg, const char *line)
+static int	parse_color(t_config *cfg, const char *line, int line_num) // TODO: Modifications
 {
-
-	// *TO DO: add check if color nbr is >= 0 && <= 255
 	char    **parts;
 	t_color  col;
+	int		count;
+	int		i;
+	const char	*p;
 
 	parts = ft_split(line + 2, ',');
 	col.r = ft_atoi(parts[0]);
@@ -150,24 +159,30 @@ static int add_map_line(t_config *cfg, const char *line)
 	return (0);
 }
 
-// Process a single non-empty line, return 0 on success
+// Recognize element lines (textures/colors)
+static int	is_element_line(const char *line)
+{
+	if (line == NULL || *line == '\0')
+		return (0);
+	if (ft_strncmp(line, "NO ", 3) == 0 || ft_strncmp(line, "SO ", 3) == 0
+	 || ft_strncmp(line, "WE ", 3) == 0 || ft_strncmp(line, "EA ", 3) == 0)
+		return (1);
+	if (ft_strncmp(line, "F ", 2) == 0 || ft_strncmp(line, "C ", 2) == 0)
+		return (1);
+	return (0);
+}
+
+// Process a single non-empty line
 static int	process_line(t_config *cfg, char *line, int line_num)
 {
-	int	status;
-
-	if (!ft_strncmp(line, "NO ", 3) || !ft_strncmp(line, "SO ", 3)
-		|| !ft_strncmp(line, "WE ", 3) || !ft_strncmp(line, "EA ", 3))
-		parse_texture(cfg, line);
-	else if (line[0] == 'F' || line[0] == 'C')
-		return (parse_color(cfg, line));
-	else
+	if (is_element_line(line) == 1)
 	{
-		status = add_map_line(cfg, line);
-		if (status < 0)
-			ft_putendl_fd("Error: memory allocation failed", 2);
-		return (status);
+		if (!ft_strncmp(line, "NO ", 3) || !ft_strncmp(line, "SO ", 3)
+			|| !ft_strncmp(line, "WE ", 3) || !ft_strncmp(line, "EA ", 3))
+				return (parse_texture(cfg, line, line_num));
+			return (parse_color(cfg, line, line_num));		
 	}
-	return (0);
+	return (add_map_line(cfg, line));
 }
 
 // Read all lines, dispatch element vs map, report errors
