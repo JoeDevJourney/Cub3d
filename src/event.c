@@ -6,7 +6,7 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:06:48 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/15 16:04:40 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/17 17:56:51 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,5 @@ void	handle_input(void *param)
 		clean_exit(cub);
 	render_frame(cub);
 	moving_forward_backward(cub);
+	moving_left_right(cub);
 }

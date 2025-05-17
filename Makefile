@@ -1,5 +1,7 @@
 CC = cc
 CFLAGS = -g -Wall -Wextra -Werror -Iinclude -I./MLX42/include -I./libft/include
+CFLAGS += -I/usr/local/include
+CFLAGS += -I/opt/homebrew/include
 MAKEFLAGS += -s
 
 SRCDIR = ./src
@@ -8,6 +10,8 @@ INCDIR = ./include
 LIBFTDIR = ./include/libft
 LIBMLX = ./MLX42
 LIB = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
+LDFLAGS += -L/usr/local/lib -lglfw
+LDFLAGS += -L/opt/homebrew/lib -lglfw
 
 SRCS = $(addprefix $(SRCDIR)/, event.c raycast.c render_column.c render_frame.c utils.c moving.c)
 SRCS += main.c
@@ -33,7 +37,7 @@ $(LIBMLX)/build/libmlx42.a: $(LIBMLX)
 
 $(NAME): $(OBJDIR) $(OBJS) $(LIBFT)
 	@echo "\033[33mCompilating $(NAME)...\033[0m"
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L$(LIBFTDIR) -lft $(LIB)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L$(LIBFTDIR) -lft $(LIB) $(LDFLAGS)
 	@echo "$(NAME) compiled \033[32msuccessfully\033[0m!"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
