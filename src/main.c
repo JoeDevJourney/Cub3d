@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorgutie <jorgutie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:52:01 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/12 13:00:25 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/18 13:54:34 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,15 @@ int main(int argc, char **argv)
 	}
 	if (parser(argv[1], &cfg) < 0)
 	{
+		free_config(&cfg);
 		ft_putendl_fd("Failed to load configuration.", 2);
 		return (1);
 	}
+
+	printf("color : %d\n", cfg.floor.b);
+	printf("texture no : %s\n", cfg.texture_no);
 	// TO-DO: initialize MLX, load textures, start game loop
 	// cleanup of cfg.map and texture strings goes here
-
+	free_config(&cfg);
 	return (0);
 }

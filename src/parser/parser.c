@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:57:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/16 20:48:51 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/18 13:49:00 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,39 @@ static int	report_err(int line, const char *msg)
 	ft_putstr_fd("): ", 2);
 	ft_putendl_fd((char *)msg, 2);
 	return (-1);
+}
+//Free all cfg allocations (textures + map)
+void	free_config(t_config *cfg)
+{
+	int	i;
+
+	if (cfg->texture_no)
+		free(cfg->texture_no);
+	if (cfg->texture_so)
+		free(cfg->texture_so);
+	if (cfg->texture_we)
+		free(cfg->texture_we);
+	if (cfg->texture_ea)
+		free(cfg->texture_ea);
+	if (cfg->map)
+	{
+		i = 0;
+		while (cfg->map[i])
+			free(cfg->map[i++]);
+		free(cfg->map);
+	}
+}
+
+// Strip a single trailing '\n' if present 
+static void	strip_nl(char *line)
+{
+	int	len;
+
+	if (line == NULL)
+		return;
+	len = ft_strlen(line);
+	if (len > 0 && line[len - 1] == '\n')
+		line[len - 1] = '\0';
 }
 
 // Check the file has a ".cub" extension
@@ -71,6 +104,7 @@ static int parse_texture(t_config *cfg, const char *line, int line_num)
 {
 	char **parts;
 	int	count;
+	char *dup;
 	// char **target_texture = NULL;
 
 	parts = ft_split(line, ' ');
@@ -80,22 +114,28 @@ static int parse_texture(t_config *cfg, const char *line, int line_num)
 	if (count != 2)
 		return (ft_free_2d(parts), report_err(line_num,
 				"invalid texture format"));
+	dup = ft_strdup(parts[1]);
+	if (dup == NULL)
+	{
+		ft_free_2d(parts);
+		return (report_err(line_num, "memory allocation failed"));
+	}
 	if (!ft_strcmp(parts[0], "NO") && cfg->texture_no == NULL)
-		cfg->texture_no = ft_strdup(parts[1]);
+		cfg->texture_no = dup;
 	else if (!ft_strcmp(parts[0], "SO") && cfg->texture_so == NULL)
-		cfg->texture_so = ft_strdup(parts[1]);
+		cfg->texture_so = dup;
 	else if (!ft_strcmp(parts[0], "WE") && cfg->texture_we == NULL)
-		cfg->texture_we = ft_strdup(parts[1]);
+		cfg->texture_we = dup;
 	else if (!ft_strcmp(parts[0], "EA") && cfg->texture_ea == NULL)
-		cfg->texture_ea = ft_strdup(parts[1]);
+		cfg->texture_ea = dup;
 	else
-		return (ft_free_2d(parts), report_err(line_num, 
+		return (free(dup), ft_free_2d(parts), report_err(line_num, 
 				"unknown or duplicate texture ID"));
 
-	if (cfg->texture_no == NULL || cfg->texture_so == NULL
-		|| cfg->texture_we == NULL || cfg->texture_ea == NULL)	
-		return (ft_free_2d(parts), report_err(line_num,
-				"memory allocation failed"));
+	// if (cfg->texture_no == NULL || cfg->texture_so == NULL
+	// 	|| cfg->texture_we == NULL || cfg->texture_ea == NULL)	
+	// 	return (ft_free_2d(parts), report_err(line_num,
+	// 			"memory allocation failed"));
 	
 	// *target_texture = ft_strdup(parts[1]);
 	// if (*target_texture == NULL)
@@ -157,10 +197,13 @@ static int	parse_color(t_config *cfg, const char *line, int line_num)
 		ft_putendl_fd("Error: color value out of range (0-255)", 2);
 		return (-1);
 	}
-	if (line[0] == 'F')
+	if (line[0] == 'F' && cfg->floor.r < 0)
 		cfg->floor = col;
-	else
+	else if (line[0] == 'C' && cfg->ceiling.r < 0)
 		cfg->ceiling = col;
+	else
+		return (ft_free_2d(parts),report_err(line_num,
+				"duplicate color ID"));
 	ft_free_2d(parts);
 	return (0);
 }
@@ -232,7 +275,8 @@ int	parse_file(int fd, t_config *cfg)
 	map_started = 0;
 	line_num = 0;
 	while ((line = get_next_line(fd)) != NULL)
-	{
+	{	
+		strip_nl(line);
 		line_num++;
 		if (line[0] != '\0' && is_element_line(line))
 		{
@@ -266,6 +310,8 @@ int	parser(const char *path, t_config *cfg)
 	ret = parse_file(fd, cfg);
 	close(fd);
 	if (ret < 0)
-		return (-1);
-	return (validate_cfg(cfg));
+		return (free_config(cfg), -1);
+	if (validate_cfg(cfg) < 0)
+		return (free_config(cfg), -1);
+	return (0);
 }
