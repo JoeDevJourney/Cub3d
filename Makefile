@@ -7,6 +7,7 @@ LIBFT_DIR   = include/libft
 LIBFT       = $(LIBFT_DIR)/libft.a
 
 MLX_DIR     = MLX42
+MLX_LIB     = $(MLX_DIR)/build/libmlx42.a
 MLX_REPO    = https://github.com/codam-coding-college/MLX42.git
 MLX_FLAGS   = $(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
@@ -34,7 +35,8 @@ INC         = -I$(INC_DIR) -I$(LIBFT_DIR)/inc -I$(MLX_DIR)/include
 # Source files
 SRC_FILES   = main.c \
               parser/parser.c \
-              parser/validation.c
+              parser/validation.c \
+			  parser/normalization.c
 
 SRCS        = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS        = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
@@ -44,7 +46,7 @@ OBJS        = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 all: $(NAME)
 
 # Link executable
-$(NAME): $(LIBFT) $(MLX_DIR)/build/libmlx42.a $(OBJS)
+$(NAME): $(LIBFT) $(MLX_LIB) $(OBJS)
 	@echo "$(ORANGE)Linking $(NAME)...$(RESET)"
 	@$(CC) $(CFLAGS) $(INC) $(OBJS) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
 	@echo "$(GREEN)** $(NAME) Compiled successfully! **$(RESET)"
@@ -53,15 +55,16 @@ $(NAME): $(LIBFT) $(MLX_DIR)/build/libmlx42.a $(OBJS)
 $(LIBFT):
 	@make -C $(LIBFT_DIR)
 
-# Clone MLX42 if missing
-$(MLX_DIR):
-	@echo "→ MLX42 not found, cloning into $(MLX_DIR)..."
-	@git clone $(MLX_REPO) $(MLX_DIR)
-
-# Build MLX42 static lib (depends on having MLX_DIR)
-$(MLX_DIR)/build/libmlx42.a: $(MLX_DIR)
-	@cmake $(MLX_DIR) -B $(MLX_DIR)/build
-	@make -C $(MLX_DIR)/build
+# ─ Download & build MLX42 in one target ───────────────────────────────────────
+$(MLX_LIB):
+	@# Clone if needed
+	@if [ ! -d $(MLX_DIR) ]; then \
+	  echo "$(BLUE)** Downloading MLX42... **$(RESET)"; \
+	  git clone $(MLX_REPO) $(MLX_DIR); \
+	fi
+	@# Build
+	@echo "$(ORANGE)** Building MLX42... **$(RESET)"
+	@cd $(MLX_DIR) && cmake -B build && cmake --build build
 
 # Compile .c → .o
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c

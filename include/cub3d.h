@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:27:29 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/18 13:49:14 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/18 14:21:27 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,21 @@
 # include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
+#include "libft.h"
+#include <fcntl.h>
+#include <unistd.h>
 
+//Colors used for terminal output____________________
+# define GREEN "\033[0;32m"
+# define BLUE "\033[0;34m"
+# define ORANGE "\033[38;5;214m"
+# define RED "\033[0;31m"
+# define YELLOW "\033[0;33m"
+# define WHITE "\033[0;37m"
+# define RESET "\033[0m"
+# define B_RED "\033[1;31m"// Bright Red
+# define MAG "\033[0;35m"// Magenta
+# define CYAN "\x1b[36m" //Cyan
 
 // Color Structure
 typedef struct	s_color
@@ -43,10 +57,11 @@ typedef struct s_config
 }	t_config;
 
 
-// Functions
-void init_config(t_config *cfg);
-int	parser(const char *path, t_config *cfg);
-int	validate_cfg(t_config *cfg);
+// Parser Functions
+void 	init_config(t_config *cfg);
+int		parser(const char *path, t_config *cfg);
+int		validate_cfg(t_config *cfg);
 void	free_config(t_config *cfg);
+int		normalize_map(t_config *cfg);
 
 #endif

@@ -6,11 +6,11 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:57:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/18 13:49:00 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/18 14:47:46 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "cub3d.h"
 
 // helper to print and return error
 static int	report_err(int line, const char *msg)
@@ -43,7 +43,7 @@ void	free_config(t_config *cfg)
 	}
 }
 
-// Strip a single trailing '\n' if present 
+// Remove a single trailing '\n' if present 
 static void	strip_nl(char *line)
 {
 	int	len;
@@ -105,7 +105,6 @@ static int parse_texture(t_config *cfg, const char *line, int line_num)
 	char **parts;
 	int	count;
 	char *dup;
-	// char **target_texture = NULL;
 
 	parts = ft_split(line, ' ');
 	count = 0;
@@ -116,10 +115,7 @@ static int parse_texture(t_config *cfg, const char *line, int line_num)
 				"invalid texture format"));
 	dup = ft_strdup(parts[1]);
 	if (dup == NULL)
-	{
-		ft_free_2d(parts);
-		return (report_err(line_num, "memory allocation failed"));
-	}
+		return (ft_free_2d(parts), report_err(line_num, "memory allocation failed"));
 	if (!ft_strcmp(parts[0], "NO") && cfg->texture_no == NULL)
 		cfg->texture_no = dup;
 	else if (!ft_strcmp(parts[0], "SO") && cfg->texture_so == NULL)
@@ -130,18 +126,7 @@ static int parse_texture(t_config *cfg, const char *line, int line_num)
 		cfg->texture_ea = dup;
 	else
 		return (free(dup), ft_free_2d(parts), report_err(line_num, 
-				"unknown or duplicate texture ID"));
-
-	// if (cfg->texture_no == NULL || cfg->texture_so == NULL
-	// 	|| cfg->texture_we == NULL || cfg->texture_ea == NULL)	
-	// 	return (ft_free_2d(parts), report_err(line_num,
-	// 			"memory allocation failed"));
-	
-	// *target_texture = ft_strdup(parts[1]);
-	// if (*target_texture == NULL)
-	// 	return (ft_free_2d(parts), report_err(line_num,
-	// 			"memory allocation failed"));
-				
+				"unknown or duplicate texture ID"));				
 	return (ft_free_2d(parts), 0);
 }
 
@@ -310,6 +295,8 @@ int	parser(const char *path, t_config *cfg)
 	ret = parse_file(fd, cfg);
 	close(fd);
 	if (ret < 0)
+		return (free_config(cfg), -1);
+	if (normalize_map(cfg) < 0)
 		return (free_config(cfg), -1);
 	if (validate_cfg(cfg) < 0)
 		return (free_config(cfg), -1);

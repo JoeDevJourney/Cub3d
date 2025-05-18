@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorgutie <jorgutie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:38:21 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/12 14:10:21 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/18 14:14:44 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include "libft.h"
-#include <unistd.h>
 
 // Count player start positions in map
 static int count_player(char **map)
