@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:57:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/18 14:47:46 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/18 16:08:27 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,10 +295,10 @@ int	parser(const char *path, t_config *cfg)
 	ret = parse_file(fd, cfg);
 	close(fd);
 	if (ret < 0)
-		return (free_config(cfg), -1);
+		return (-1);
 	if (normalize_map(cfg) < 0)
-		return (free_config(cfg), -1);
+		return (-1);
 	if (validate_cfg(cfg) < 0)
-		return (free_config(cfg), -1);
+		return (-1);
 	return (0);
 }
