@@ -36,7 +36,9 @@ INC         = -I$(INC_DIR) -I$(LIBFT_DIR)/inc -I$(MLX_DIR)/include
 SRC_FILES   = main.c \
               parser/parser.c \
               parser/validation.c \
-			  parser/normalization.c
+			  parser/normalization.c \
+			  parser/player.c 
+
 
 SRCS        = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS        = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

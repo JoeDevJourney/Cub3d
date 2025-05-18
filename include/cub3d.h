@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:27:29 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/18 14:21:27 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/18 17:08:29 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,17 @@
 # define MAG "\033[0;35m"// Magenta
 # define CYAN "\x1b[36m" //Cyan
 
+// Player Structure
+typedef struct s_player
+{
+	double	x;
+	double	y;
+	double	dir_x;
+	double	dir_y;
+	double	plane_x;
+	double	plane_y;
+}	t_player;
+
 // Color Structure
 typedef struct	s_color
 {
@@ -45,23 +56,25 @@ typedef struct	s_color
 // Configuration Structure: textures, colors, maps
 typedef struct s_config
 {
-	char	*texture_no;
-	char	*texture_so;
-	char	*texture_we;
-	char	*texture_ea;
-	t_color	floor;
-	t_color	ceiling;
-	char	**map;
-	int		map_width;
-	int		map_height;
-}	t_config;
+	char		*texture_no;
+	char		*texture_so;
+	char		*texture_we;
+	char		*texture_ea;
+	t_color		floor;
+	t_color		ceiling;
+	char		**map;
+	int			map_width;
+	int			map_height;
+	t_player	player;
+}	t_config;	
 
 
 // Parser Functions
-void 	init_config(t_config *cfg);
+void	init_config(t_config *cfg);
 int		parser(const char *path, t_config *cfg);
 int		validate_cfg(t_config *cfg);
 void	free_config(t_config *cfg);
 int		normalize_map(t_config *cfg);
+int		init_player(t_config *cfg);
 
 #endif

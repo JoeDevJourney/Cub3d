@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:57:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/18 16:08:27 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/18 17:09:55 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,5 +300,7 @@ int	parser(const char *path, t_config *cfg)
 		return (-1);
 	if (validate_cfg(cfg) < 0)
 		return (-1);
+	if (init_player(cfg) < 0)
+		return (report_err(0, "invalid or missing player start"));
 	return (0);
 }
