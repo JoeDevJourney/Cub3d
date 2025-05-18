@@ -6,14 +6,14 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:57:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/18 17:09:55 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/18 19:53:54 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // helper to print and return error
-static int	report_err(int line, const char *msg)
+int	report_err(int line, const char *msg)
 {
 	ft_putstr_fd("Error (line ", 2);
 	ft_putnbr_fd(line, 2);
@@ -93,11 +93,11 @@ void	init_config(t_config *cfg)
 	cfg->map_height = 0;
 }
 
-// Validate a single color component (0-255)
-static int is_valid_component(int c)
-{
-	return (c >= 0 && c <= 255);
-}
+// // Validate a single color component (0-255)
+// static int is_valid_component(int c)
+// {
+// 	return (c >= 0 && c <= 255);
+// }
 
 // To parse texture line (NO, SO, WE, EA)
 static int parse_texture(t_config *cfg, const char *line, int line_num)
@@ -131,7 +131,7 @@ static int parse_texture(t_config *cfg, const char *line, int line_num)
 }
 
 /* Check if string is numeric */
-static int	is_numeric(const char *s)
+int	is_numeric(const char *s)
 {
 	if (s == NULL)
 		return (0);
@@ -146,52 +146,54 @@ static int	is_numeric(const char *s)
 	return (1);
 }
 
-// To parse the colors (Ceiling and Floor)
-static int	parse_color(t_config *cfg, const char *line, int line_num)
-{
-	char	**parts;
-	t_color	col;
-	int		count;
-	int		i;
-	const char	*p;
+// // To parse the colors (Ceiling and Floor)
+// static int	parse_color(t_config *cfg, const char *line, int line_num)
+// {
+// 	char	**parts;
+// 	t_color	col;
+// 	int		count;
+// 	int		i;
+// 	const char	*p;
 
-	p = line + 1;
-	if (*p != ' ')
-		return (report_err(line_num, "missing space after color ID"));
-	parts = ft_split(p + 1, ',');
-	count = 0;
-	while (parts[count])
-		count++;
-	if (count != 3)
-		return (ft_free_2d(parts), report_err(line_num,
-			"color must have 3 values"));
-	i = 0;
-	while (i < 3)
-	{
-		if (is_numeric(parts[i]) == 0)
-			return (ft_free_2d(parts), report_err(line_num,
-				"non-numeric color value"));
-		i++;
-	}
-	col.r = ft_atoi(parts[0]);
-	col.g = ft_atoi(parts[1]);
-	col.b = ft_atoi(parts[2]);
-	if (!is_valid_component(col.r) || !is_valid_component(col.g)
-	|| !is_valid_component(col.b))
-	{
-		ft_putendl_fd("Error: color value out of range (0-255)", 2);
-		return (-1);
-	}
-	if (line[0] == 'F' && cfg->floor.r < 0)
-		cfg->floor = col;
-	else if (line[0] == 'C' && cfg->ceiling.r < 0)
-		cfg->ceiling = col;
-	else
-		return (ft_free_2d(parts),report_err(line_num,
-				"duplicate color ID"));
-	ft_free_2d(parts);
-	return (0);
-}
+// 	p = line + 1;
+// 	if (*p != ' ')
+// 		return (report_err(line_num, "missing space after color ID"));
+// 	parts = ft_split(p + 1, ',');
+// 	count = 0;
+// 	while (parts[count])
+// 		count++;
+// 	if (count != 3)
+// 		return (ft_free_2d(parts), report_err(line_num,
+// 			"color must have 3 values"));
+// 	i = 0;
+// 	while (i < 3)
+// 	{
+// 		if (is_numeric(parts[i]) == 0)
+// 			return (ft_free_2d(parts), report_err(line_num,
+// 				"non-numeric color value"));
+// 		i++;
+// 	}
+// 	col.r = ft_atoi(parts[0]);
+// 	col.g = ft_atoi(parts[1]);
+// 	col.b = ft_atoi(parts[2]);
+// 	if (!is_valid_component(col.r) || !is_valid_component(col.g)
+// 	|| !is_valid_component(col.b))
+// 	{
+// 		ft_putendl_fd("Error: color value out of range (0-255)", 2);
+// 		return (-1);
+// 	}
+// 	if (line[0] == 'F' && cfg->floor.r < 0)
+// 		cfg->floor = col;
+// 	else if (line[0] == 'C' && cfg->ceiling.r < 0)
+// 		cfg->ceiling = col;
+// 	else
+// 		return (ft_free_2d(parts),report_err(line_num,
+// 				"duplicate color ID"));
+// 	ft_free_2d(parts);
+// 	return (0);
+// }
+
+
 
 
 // Add a map line to cfg->map array, return 0 on success

@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 14:12:46 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/18 18:01:39 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/18 20:00:06 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	normalize_map(t_config *cfg)
 	cfg->map = nm;
 	cfg->map_height = h;
 	cfg->map_width = w;
-	printf("map width : %d\n", cfg->map_width);
-	printf("map height : %d\n", cfg->map_height);
+	// printf("map width : %d\n", cfg->map_width);
+	// printf("map height : %d\n", cfg->map_height);
 	return (0);
 }

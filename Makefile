@@ -37,7 +37,9 @@ SRC_FILES   = main.c \
               parser/parser.c \
               parser/validation.c \
 			  parser/normalization.c \
-			  parser/player.c 
+			  parser/player.c \
+			  parser/color.c 
+
 
 
 SRCS        = $(addprefix $(SRC_DIR)/, $(SRC_FILES))

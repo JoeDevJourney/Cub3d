@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:27:29 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/18 17:08:29 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/18 19:54:09 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,8 @@ int		validate_cfg(t_config *cfg);
 void	free_config(t_config *cfg);
 int		normalize_map(t_config *cfg);
 int		init_player(t_config *cfg);
+int		report_err(int line, const char *msg);
+int		parse_color(t_config *cfg, const char *line, int line_num);
+int		is_numeric(const char *s);
 
 #endif
