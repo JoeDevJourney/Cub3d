@@ -6,14 +6,14 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:23:48 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/19 15:17:31 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/19 20:30:30 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // Skip leading spaces
-char *skip_spaces(char *s)
+char	*skip_spaces(char *s)
 {
 	while (*s == ' ')
 		s++;
@@ -37,9 +37,9 @@ int	is_numeric(const char *s)
 }
 
 // Print every row of the normalized map to stdout
-void print_map(char **map)
+void	print_map(char **map)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (map[i])
@@ -48,6 +48,7 @@ void print_map(char **map)
 		i++;
 	}
 }
+
 // helper to print and return error
 int	report_err(int line, const char *msg)
 {

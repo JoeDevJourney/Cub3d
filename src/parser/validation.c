@@ -6,23 +6,11 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:38:21 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/19 12:54:20 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/19 20:16:46 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-
-// ________________________________________________________________________________
-static int check_surroundings(t_config *cfg, int y, int x)
-{
-	if (y <= 0 || y >= cfg->map_height - 1)
-		return (0);
-	if (x <= 0 || x >= cfg->map_width  - 1)
-		return (0);
-	return (1);
-}
-
 
 // /* Debug closure failures: prints y,x,c */
 // static int debug_check_surroundings(t_config *cfg, int y, int x)
@@ -45,11 +33,11 @@ static int check_surroundings(t_config *cfg, int y, int x)
 // }
 
 // Count player start positions in map
-static int count_player(char **map)
+static int	count_player(char **map)
 {
-	int y;
-	int x;
-	int cnt;
+	int	y;
+	int	x;
+	int	cnt;
 
 	y = 0;
 	cnt = 0;
@@ -102,13 +90,11 @@ static int count_player(char **map)
 // 	return (1);
 // }
 
-
-
 // Validate textures and colors presence */
-static int validate_textures_colors(t_config *cfg)
+static int	validate_textures_colors(t_config *cfg)
 {
 	if (!cfg->texture_no || !cfg->texture_so
-	 || !cfg->texture_we || !cfg->texture_ea)
+		|| !cfg->texture_we || !cfg->texture_ea)
 	{
 		ft_putendl_fd("Error: missing texture", 2);
 		return (-1);
@@ -123,7 +109,7 @@ static int validate_textures_colors(t_config *cfg)
 }
 
 // Validate exactly one player start
-static int validate_player(char **map)
+static int	validate_player(char **map)
 {
 	if (count_player(map) != 1)
 	{
@@ -161,9 +147,9 @@ static int validate_player(char **map)
 // Validate each cell: allowed chars and closure
 static int	validate_map_structure(t_config *cfg)
 {
-	int  y;
-	int  x;
-	char c;
+	int		y;
+	int		x;
+	char	c;
 
 	y = 0;
 	while (y < cfg->map_height)
@@ -173,11 +159,11 @@ static int	validate_map_structure(t_config *cfg)
 		{
 			c = cfg->map[y][x];
 			if (!(c == '1' || c == ' ' || c == '0'
-			 || ft_strchr("NSEW", c)))
+					|| ft_strchr("NSEW", c)))
 				return (ft_putendl_fd("Error: invalid map char", 2), -1);
 			if ((c == '0' || ft_strchr("NSEW", c))
 				&& !check_surroundings(cfg, y, x))
-					return (ft_putendl_fd("Error: map not closed", 2), -1);
+				return (ft_putendl_fd("Error: map not closed", 2), -1);
 			//  && !check_surroundings(cfg, y, x))
 			// 	return (ft_putendl_fd("Error: map not closed", 2), -1);
 			x++;
@@ -187,12 +173,11 @@ static int	validate_map_structure(t_config *cfg)
 	return (0);
 }
 
-
 // Validate entire configuration
-int validate_cfg(t_config *cfg)
+int	validate_cfg(t_config *cfg)
 {
-	char **m;
-	
+	char	**m;
+
 	m = cfg->map;
 	if (validate_textures_colors(cfg) < 0)
 		return (-1);
@@ -204,4 +189,3 @@ int validate_cfg(t_config *cfg)
 		return (-1);
 	return (0);
 }
-

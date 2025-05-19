@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:22:58 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/19 15:27:30 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/19 20:16:34 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	strip_nl(char *line)
 	int	len;
 
 	if (line == NULL)
-		return;
+		return ;
 	len = ft_strlen(line);
 	if (len > 0 && line[len - 1] == '\n')
 		line[len - 1] = '\0';
@@ -62,22 +62,29 @@ void	init_config(t_config *cfg)
 	cfg->map_height = 0;
 }
 
-
-
-
-
-int is_element_line(char *line)
+int	is_element_line(char *line)
 {
-	char *p = skip_spaces(line);
+	char	*p;
+
+	p = skip_spaces(line);
 	if (!*p)
 		return (0);
 	if (!ft_strncmp(p, "NO ", 3)
-	 || !ft_strncmp(p, "SO ", 3)
-	 || !ft_strncmp(p, "WE ", 3)
-	 || !ft_strncmp(p, "EA ", 3))
+		|| !ft_strncmp(p, "SO ", 3)
+		|| !ft_strncmp(p, "WE ", 3)
+		|| !ft_strncmp(p, "EA ", 3))
 		return (1);
 	if (!ft_strncmp(p, "F ", 2)
-	 || !ft_strncmp(p, "C ", 2))
+		|| !ft_strncmp(p, "C ", 2))
 		return (1);
 	return (0);
+}
+
+int	check_surroundings(t_config *cfg, int y, int x)
+{
+	if (y <= 0 || y >= cfg->map_height - 1)
+		return (0);
+	if (x <= 0 || x >= cfg->map_width - 1)
+		return (0);
+	return (1);
 }
