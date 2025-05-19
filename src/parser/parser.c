@@ -6,11 +6,18 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:57:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/18 19:53:54 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/19 13:12:57 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static const char *skip_spaces(const char *s)
+{
+	while (*s == ' ' || *s == '\t')
+		s++;
+	return (s);
+}
 
 // helper to print and return error
 int	report_err(int line, const char *msg)
@@ -21,6 +28,7 @@ int	report_err(int line, const char *msg)
 	ft_putendl_fd((char *)msg, 2);
 	return (-1);
 }
+
 //Free all cfg allocations (textures + map)
 void	free_config(t_config *cfg)
 {
@@ -93,11 +101,6 @@ void	init_config(t_config *cfg)
 	cfg->map_height = 0;
 }
 
-// // Validate a single color component (0-255)
-// static int is_valid_component(int c)
-// {
-// 	return (c >= 0 && c <= 255);
-// }
 
 // To parse texture line (NO, SO, WE, EA)
 static int parse_texture(t_config *cfg, const char *line, int line_num)
@@ -146,55 +149,6 @@ int	is_numeric(const char *s)
 	return (1);
 }
 
-// // To parse the colors (Ceiling and Floor)
-// static int	parse_color(t_config *cfg, const char *line, int line_num)
-// {
-// 	char	**parts;
-// 	t_color	col;
-// 	int		count;
-// 	int		i;
-// 	const char	*p;
-
-// 	p = line + 1;
-// 	if (*p != ' ')
-// 		return (report_err(line_num, "missing space after color ID"));
-// 	parts = ft_split(p + 1, ',');
-// 	count = 0;
-// 	while (parts[count])
-// 		count++;
-// 	if (count != 3)
-// 		return (ft_free_2d(parts), report_err(line_num,
-// 			"color must have 3 values"));
-// 	i = 0;
-// 	while (i < 3)
-// 	{
-// 		if (is_numeric(parts[i]) == 0)
-// 			return (ft_free_2d(parts), report_err(line_num,
-// 				"non-numeric color value"));
-// 		i++;
-// 	}
-// 	col.r = ft_atoi(parts[0]);
-// 	col.g = ft_atoi(parts[1]);
-// 	col.b = ft_atoi(parts[2]);
-// 	if (!is_valid_component(col.r) || !is_valid_component(col.g)
-// 	|| !is_valid_component(col.b))
-// 	{
-// 		ft_putendl_fd("Error: color value out of range (0-255)", 2);
-// 		return (-1);
-// 	}
-// 	if (line[0] == 'F' && cfg->floor.r < 0)
-// 		cfg->floor = col;
-// 	else if (line[0] == 'C' && cfg->ceiling.r < 0)
-// 		cfg->ceiling = col;
-// 	else
-// 		return (ft_free_2d(parts),report_err(line_num,
-// 				"duplicate color ID"));
-// 	ft_free_2d(parts);
-// 	return (0);
-// }
-
-
-
 
 // Add a map line to cfg->map array, return 0 on success
 static int add_map_line(t_config *cfg, const char *line)
@@ -226,18 +180,35 @@ static int add_map_line(t_config *cfg, const char *line)
 	return (0);
 }
 
-// Recognize element lines (textures/colors)
-static int	is_element_line(const char *line)
+
+static int is_element_line(const char *line)
 {
-	if (line == NULL || *line == '\0')
+	const char *p = skip_spaces(line);
+	if (!*p)
 		return (0);
-	if (ft_strncmp(line, "NO ", 3) == 0 || ft_strncmp(line, "SO ", 3) == 0
-	 || ft_strncmp(line, "WE ", 3) == 0 || ft_strncmp(line, "EA ", 3) == 0)
+	if (!ft_strncmp(p, "NO ", 3)
+	 || !ft_strncmp(p, "SO ", 3)
+	 || !ft_strncmp(p, "WE ", 3)
+	 || !ft_strncmp(p, "EA ", 3))
 		return (1);
-	if (ft_strncmp(line, "F ", 2) == 0 || ft_strncmp(line, "C ", 2) == 0)
+	if (!ft_strncmp(p, "F ", 2)
+	 || !ft_strncmp(p, "C ", 2))
 		return (1);
 	return (0);
 }
+
+// // Recognize element lines (textures/colors)
+// static int	is_element_line(const char *line)
+// {
+// 	if (line == NULL || *line == '\0')
+// 		return (0);
+// 	if (ft_strncmp(line, "NO ", 3) == 0 || ft_strncmp(line, "SO ", 3) == 0
+// 	 || ft_strncmp(line, "WE ", 3) == 0 || ft_strncmp(line, "EA ", 3) == 0)
+// 		return (1);
+// 	if (ft_strncmp(line, "F ", 2) == 0 || ft_strncmp(line, "C ", 2) == 0)
+// 		return (1);
+// 	return (0);
+// }
 
 // Process a single non-empty line
 static int	process_line(t_config *cfg, char *line, int line_num)
@@ -261,20 +232,54 @@ int	parse_file(int fd, t_config *cfg)
 
 	map_started = 0;
 	line_num = 0;
-	while ((line = get_next_line(fd)) != NULL)
-	{	
+	// while ((line = get_next_line(fd)) != NULL)
+	// {	
+	// 	strip_nl(line);
+	// 	line_num++;
+	// 	if (line[0] != '\0' && is_element_line(line))
+	// 	{
+	// 		if (process_line(cfg, line, line_num) < 0)
+	// 			return (free(line), -1);			
+	// 	}
+	// 	else if (line[0] != '\0')
+	// 	{
+	// 		map_started = (map_started * 0) + 1;
+	// 		if (add_map_line(cfg, line) < 0)
+	// 			return (free(line), -1);
+	// 	}
+	// 	free(line);
+	// }
+	// return (0);
+	while ((line = get_next_line(fd)))
+	{
 		strip_nl(line);
 		line_num++;
-		if (line[0] != '\0' && is_element_line(line))
+		// skip entirely blank or whitespace-only lines
+		if (*skip_spaces(line) == '\0')
 		{
-			if (process_line(cfg, line, line_num) < 0)
-				return (free(line), -1);			
+			free(line);
+			continue;
 		}
-		else if (line[0] != '\0')
+		if (!map_started && is_element_line(line))
 		{
-			map_started = (map_started * 0) + 1;
-			if (add_map_line(cfg, line) < 0)
-				return (free(line), -1);
+			// pass the *trimmed* pointer to process_line
+			if (process_line(cfg,
+					(char *)skip_spaces(line),
+					line_num) < 0)
+			{
+				free(line);
+				return (-1);
+			}
+		}
+		else
+		{
+			map_started = 1;
+			if (add_map_line(cfg,
+					(char *)skip_spaces(line)) < 0)
+			{
+				free(line);
+				return (-1);
+			}
 		}
 		free(line);
 	}
@@ -298,8 +303,11 @@ int	parser(const char *path, t_config *cfg)
 	close(fd);
 	if (ret < 0)
 		return (-1);
-	if (normalize_map(cfg) < 0)
-		return (-1);
+	// if (normalize_map(cfg) < 0)
+	// 	return (-1);
+	if (normalize_map(cfg) < 0 || check_normalization(cfg) < 0
+		|| validate_cfg(cfg) < 0)
+			return (-1);
 	if (validate_cfg(cfg) < 0)
 		return (-1);
 	if (init_player(cfg) < 0)

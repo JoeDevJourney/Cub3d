@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:52:01 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/18 14:49:12 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/19 13:00:43 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,17 @@ int main(int argc, char **argv)
 		return (1);
 	}
 
+	// ----------------TO DEBUG -----------------------------
 	printf("color : %d\n", cfg.floor.b);
 	printf("texture no : %s\n", cfg.texture_no);
 	printf("map width : %d\n", cfg.map_width);
 	printf("map height : %d\n", cfg.map_height);
-
+	printf("player x : %f, y : %f\n", cfg.player.x, cfg.player.y);
+	printf("player xdir : %f, ydir : %f\n", cfg.player.dir_x, cfg.player.dir_y);
+	
+	 
+	print_map(cfg.map); // PRINT NORMALIZED MAP
+	
 	// TO-DO: initialize MLX, load textures, start game loop
 	// cleanup of cfg.map and texture strings goes here
 	free_config(&cfg);

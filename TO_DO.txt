@@ -2,3 +2,6 @@
 
 TO DO: add check if color nbr is >= 0 && <= 255 
 
+En un momento todo puede ser IRREVERSEBILE
+
+Todo cambia en un segundo, lo que nunca podría pasar. En un instante irreversible!

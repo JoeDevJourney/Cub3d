@@ -6,45 +6,43 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:38:21 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/18 16:06:48 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/19 12:54:20 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// Check that cell at (y,x) is enclosed by non-space neighbors
-static int	check_surroundings(t_config *cfg, int y, int x)
+
+// ________________________________________________________________________________
+static int check_surroundings(t_config *cfg, int y, int x)
 {
 	if (y <= 0 || y >= cfg->map_height - 1)
 		return (0);
-	if (x <= 0 || x >= cfg->map_width - 1)
-		return (0);
-	if (cfg->map[y - 1][x] == ' ' || cfg->map[y + 1][x] == ' ')
-		return (0);
-	if (cfg->map[y][x - 1] == ' ' || cfg->map[y][x + 1] == ' ')
+	if (x <= 0 || x >= cfg->map_width  - 1)
 		return (0);
 	return (1);
 }
 
-/* Debug closure failures: prints y,x,c */
-static int debug_check_surroundings(t_config *cfg, int y, int x)
-{
-	char c;
 
-	c = cfg->map[y][x];
-	if (!check_surroundings(cfg, y, x))
-	{
-		ft_putstr_fd("Closure fail at (", 2);
-		ft_putnbr_fd(y, 2);
-		ft_putstr_fd(",", 2);
-		ft_putnbr_fd(x, 2);
-		ft_putstr_fd(") char='", 2);
-		ft_putchar_fd(c, 2);
-		ft_putendl_fd("'", 2);
-		return (0);
-	}
-	return (1);
-}
+// /* Debug closure failures: prints y,x,c */
+// static int debug_check_surroundings(t_config *cfg, int y, int x)
+// {
+// 	char c;
+
+// 	c = cfg->map[y][x];
+// 	if (!check_surroundings(cfg, y, x))
+// 	{
+// 		ft_putstr_fd("Closure fail at (", 2);
+// 		ft_putnbr_fd(y, 2);
+// 		ft_putstr_fd(",", 2);
+// 		ft_putnbr_fd(x, 2);
+// 		ft_putstr_fd(") char='", 2);
+// 		ft_putchar_fd(c, 2);
+// 		ft_putendl_fd("'", 2);
+// 		return (0);
+// 	}
+// 	return (1);
+// }
 
 // Count player start positions in map
 static int count_player(char **map)
@@ -178,7 +176,7 @@ static int	validate_map_structure(t_config *cfg)
 			 || ft_strchr("NSEW", c)))
 				return (ft_putendl_fd("Error: invalid map char", 2), -1);
 			if ((c == '0' || ft_strchr("NSEW", c))
-				&& !debug_check_surroundings(cfg, y, x))
+				&& !check_surroundings(cfg, y, x))
 					return (ft_putendl_fd("Error: map not closed", 2), -1);
 			//  && !check_surroundings(cfg, y, x))
 			// 	return (ft_putendl_fd("Error: map not closed", 2), -1);

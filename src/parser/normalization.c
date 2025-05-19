@@ -6,11 +6,61 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 14:12:46 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/18 20:00:06 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/19 12:59:56 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+// Print every row of the normalized map to stdout
+void print_map(char **map)
+{
+	int i;
+
+	i = 0;
+	while (map[i])
+	{
+		ft_putendl_fd(map[i], 1);
+		i++;
+	}
+}
+
+
+// Verify that normalization produced a true rectangle
+int check_normalization(t_config *cfg)
+{
+	int i;
+	int len;
+
+	i = 0;
+	while (cfg->map[i])
+	{
+		len = ft_strlen(cfg->map[i]);
+		if (len != cfg->map_width)
+		{
+			ft_putstr_fd("Normalization error on row ", 2);
+			ft_putnbr_fd(i, 2);
+			ft_putstr_fd(": got ", 2);
+			ft_putnbr_fd(len, 2);
+			ft_putstr_fd(" expected ", 2);
+			ft_putnbr_fd(cfg->map_width, 2);
+			ft_putendl_fd("", 2);
+			return (-1);
+		}
+		i++;
+	}
+	if (i != cfg->map_height)
+	{
+		ft_putstr_fd("Normalization error: row count ", 2);
+		ft_putnbr_fd(i, 2);
+		ft_putstr_fd(" expected ", 2);
+		ft_putnbr_fd(cfg->map_height, 2);
+		ft_putendl_fd("", 2);
+		return (-1);
+	}
+	return (0);
+}
+
 
 // Compute height and width of the map
 static void	compute_dimensions(char **map, int *h, int *w)
@@ -106,7 +156,5 @@ int	normalize_map(t_config *cfg)
 	cfg->map = nm;
 	cfg->map_height = h;
 	cfg->map_width = w;
-	// printf("map width : %d\n", cfg->map_width);
-	// printf("map height : %d\n", cfg->map_height);
 	return (0);
 }
