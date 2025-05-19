@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:23:48 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/19 13:56:44 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:17:31 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,36 @@ void print_map(char **map)
 	{
 		ft_putendl_fd(map[i], 1);
 		i++;
+	}
+}
+// helper to print and return error
+int	report_err(int line, const char *msg)
+{
+	ft_putstr_fd("Error (line ", 2);
+	ft_putnbr_fd(line, 2);
+	ft_putstr_fd("): ", 2);
+	ft_putendl_fd((char *)msg, 2);
+	return (-1);
+}
+
+//Free all cfg allocations (textures + map)
+void	free_config(t_config *cfg)
+{
+	int	i;
+
+	if (cfg->texture_no)
+		free(cfg->texture_no);
+	if (cfg->texture_so)
+		free(cfg->texture_so);
+	if (cfg->texture_we)
+		free(cfg->texture_we);
+	if (cfg->texture_ea)
+		free(cfg->texture_ea);
+	if (cfg->map)
+	{
+		i = 0;
+		while (cfg->map[i])
+			free(cfg->map[i++]);
+		free(cfg->map);
 	}
 }

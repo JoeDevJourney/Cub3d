@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 17:02:29 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/18 17:07:17 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/19 16:30:31 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ static void	set_orientation(t_player *pl, char c)
 // Locate player start in map, set position and orientation
 int	init_player(t_config *cfg)
 {
-	int y;
-	int x;
+	int	y;
+	int	x;
 
 	y = 0;
 	while (y < cfg->map_height)
@@ -82,7 +82,7 @@ int	init_player(t_config *cfg)
 		while (x < cfg->map_width && !ft_strchr("NSEW", cfg->map[y][x]))
 			x++;
 		if (x < cfg->map_width)
-			break;
+			break ;
 		y++;
 	}
 	if (y == cfg->map_height)
@@ -93,4 +93,3 @@ int	init_player(t_config *cfg)
 	cfg->map[y][x] = '0';
 	return (0);
 }
-
