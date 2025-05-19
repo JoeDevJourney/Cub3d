@@ -38,7 +38,9 @@ SRC_FILES   = main.c \
               parser/validation.c \
 			  parser/normalization.c \
 			  parser/player.c \
-			  parser/color.c 
+			  parser/color.c \
+			  parser/utils.c \
+			  parser/utils2.c 
 
 
 

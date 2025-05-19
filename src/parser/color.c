@@ -6,19 +6,11 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 19:49:19 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/18 19:52:18 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/19 13:24:25 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-// Skip leading spaces
-static const char *skip_spaces(const char *s)
-{
-	while (*s == ' ')
-		s++;
-	return (s);
-}
 
 // Check ID is F/C and next is space 
 static int check_color_id(const char *p, int line_num)

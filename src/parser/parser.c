@@ -6,18 +6,12 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:57:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/19 13:12:57 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/19 14:54:03 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static const char *skip_spaces(const char *s)
-{
-	while (*s == ' ' || *s == '\t')
-		s++;
-	return (s);
-}
 
 // helper to print and return error
 int	report_err(int line, const char *msg)
@@ -133,22 +127,6 @@ static int parse_texture(t_config *cfg, const char *line, int line_num)
 	return (ft_free_2d(parts), 0);
 }
 
-/* Check if string is numeric */
-int	is_numeric(const char *s)
-{
-	if (s == NULL)
-		return (0);
-	if (*s == '\0')
-		return (0);
-	while (*s != '\0')
-	{
-		if (ft_isdigit(*s) == 0)
-			return (0);
-		s++;
-	}
-	return (1);
-}
-
 
 // Add a map line to cfg->map array, return 0 on success
 static int add_map_line(t_config *cfg, const char *line)
@@ -181,9 +159,9 @@ static int add_map_line(t_config *cfg, const char *line)
 }
 
 
-static int is_element_line(const char *line)
+static int is_element_line(char *line)
 {
-	const char *p = skip_spaces(line);
+	char *p = skip_spaces(line);
 	if (!*p)
 		return (0);
 	if (!ft_strncmp(p, "NO ", 3)
@@ -223,68 +201,47 @@ static int	process_line(t_config *cfg, char *line, int line_num)
 	return (add_map_line(cfg, line));
 }
 
-// Read all lines, dispatch element vs map, report errors
-int	parse_file(int fd, t_config *cfg)
+// Process a single config line: skip blanks, handle elements or map
+static int process_config_line(t_config *cfg, char *line, int *map_started, int line_num)
 {
-	int		map_started;
-	int		line_num;
-	char	*line;
+    char *trimmed = skip_spaces(line);
+    if (*trimmed == '\0')
+        return (1); // blank line, skip
 
-	map_started = 0;
-	line_num = 0;
-	// while ((line = get_next_line(fd)) != NULL)
-	// {	
-	// 	strip_nl(line);
-	// 	line_num++;
-	// 	if (line[0] != '\0' && is_element_line(line))
-	// 	{
-	// 		if (process_line(cfg, line, line_num) < 0)
-	// 			return (free(line), -1);			
-	// 	}
-	// 	else if (line[0] != '\0')
-	// 	{
-	// 		map_started = (map_started * 0) + 1;
-	// 		if (add_map_line(cfg, line) < 0)
-	// 			return (free(line), -1);
-	// 	}
-	// 	free(line);
-	// }
-	// return (0);
-	while ((line = get_next_line(fd)))
-	{
-		strip_nl(line);
-		line_num++;
-		// skip entirely blank or whitespace-only lines
-		if (*skip_spaces(line) == '\0')
-		{
-			free(line);
-			continue;
-		}
-		if (!map_started && is_element_line(line))
-		{
-			// pass the *trimmed* pointer to process_line
-			if (process_line(cfg,
-					(char *)skip_spaces(line),
-					line_num) < 0)
-			{
-				free(line);
-				return (-1);
-			}
-		}
-		else
-		{
-			map_started = 1;
-			if (add_map_line(cfg,
-					(char *)skip_spaces(line)) < 0)
-			{
-				free(line);
-				return (-1);
-			}
-		}
-		free(line);
-	}
-	return (0);
+    if (!*map_started && is_element_line(line)) {
+        if (process_line(cfg, trimmed, line_num) < 0)
+            return (-1);
+    } else {
+        *map_started = 1;
+        if (add_map_line(cfg, trimmed) < 0)
+            return (-1);
+    }
+
+    return (0);
 }
+
+// Read all lines, dispatch element vs map, report errors
+int parse_file(int fd, t_config *cfg)
+{
+    int     map_started = 0;
+    int     line_num    = 0;
+    char    *line;
+
+    while ((line = get_next_line(fd))) {
+        strip_nl(line);
+        line_num++;
+        int status = process_config_line(cfg, line, &map_started, line_num);
+        if (status < 0)
+            return (free(line), -1);
+        if (status > 0) {
+            free(line);
+            continue;
+        }
+        free(line);
+    }
+    return (0);
+}
+
 
 
 // To read the .cub file and add the info for the config structure
@@ -303,8 +260,6 @@ int	parser(const char *path, t_config *cfg)
 	close(fd);
 	if (ret < 0)
 		return (-1);
-	// if (normalize_map(cfg) < 0)
-	// 	return (-1);
 	if (normalize_map(cfg) < 0 || check_normalization(cfg) < 0
 		|| validate_cfg(cfg) < 0)
 			return (-1);

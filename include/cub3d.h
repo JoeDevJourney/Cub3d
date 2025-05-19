@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:27:29 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/19 12:34:03 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/19 13:57:08 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_config
 }	t_config;	
 
 
-// Parser Functions
+// Parser Functions_________________________________________________
 void	init_config(t_config *cfg);
 int		parser(const char *path, t_config *cfg);
 int		validate_cfg(t_config *cfg);
@@ -78,8 +78,13 @@ int		normalize_map(t_config *cfg);
 int		init_player(t_config *cfg);
 int		report_err(int line, const char *msg);
 int		parse_color(t_config *cfg, const char *line, int line_num);
+
+
+
+// Utils________________________________________
+char 	*skip_spaces(char *s);
+void 	print_map(char **map);
+int		check_normalization(t_config *cfg);
 int		is_numeric(const char *s);
-int check_normalization(t_config *cfg);
-void print_map(char **map);
 
 #endif
