@@ -6,7 +6,7 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:27:29 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/17 17:56:37 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/17 18:10:16 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,5 @@ void			render_frame(t_cub *cub);
 // moving
 void			moving_forward_backward(t_cub *cub);
 void			moving_left_right(t_cub	*cub);
+void			rotate_left_right(t_cub *cub);
 #endif

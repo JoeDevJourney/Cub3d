@@ -6,7 +6,7 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 15:42:23 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/17 17:56:17 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/20 13:32:08 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,3 +61,17 @@ void	moving_left_right(t_cub	*cub)
 			cub->pos_y += cub->plane_y * move_speed;
 	}
 }
+
+// void	rotate_left_right(t_cub *cub)
+// {
+// 	double	old_dir_x;
+// 	double	old_dir_y;
+// 	double	rot_speed;
+
+// 	rot_speed = 0.05;
+// 	if (mlx_is_key_down(cub->mlx_connect, MLX_KEY_LEFT))
+// 	{
+// 		old_dir_x = cub->dir_x;
+// 		cub->dir_x = cub->dir_x * cos(rot_speed);
+// 	}
+// }
