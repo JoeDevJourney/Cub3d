@@ -42,7 +42,14 @@ SRC_FILES   = main.c \
 			  parser/texture.c \
 			  parser/utils.c \
 			  parser/utils2.c \
-			  parser/utils3.c 
+			  parser/utils3.c \
+			  event.c \
+			  moving.c \
+			  raycast.c \
+			  render_column.c \
+			  render_frame.c \
+			  utils.c \
+
 
 
 

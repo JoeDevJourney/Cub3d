@@ -7,5 +7,6 @@ dist/
 *.tmp
 *.swp
 ./MLX42
+.gitmodules
 .vscode
 *.a
