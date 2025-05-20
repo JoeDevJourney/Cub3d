@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:57:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/19 20:30:21 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/20 13:12:57 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ static int	process_line(t_config *cfg, char *line, int line_num)
 	return (add_map_line(cfg, line));
 }
 
-// Process a single config line: skip blanks, handle elements or map
+// Process a single config line: skip blanks. 
+// checks if line is an "element line" (that defines a texture path or color
+// then process it.
 static int	process_config_line(t_config *cfg, char *line,
 	int *map_started, int line_num)
 {
@@ -104,7 +106,7 @@ int	parse_file(int fd, t_config *cfg)
 	}
 	return (0);
 }
-
+// Initialization of CFG. Check extension ".cub". Open the file
 // To read the .cub file and add the info for the config structure
 int	parser(const char *path, t_config *cfg)
 {

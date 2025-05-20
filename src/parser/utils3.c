@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:22:58 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/19 20:16:34 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:39:11 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	init_config(t_config *cfg)
 	cfg->map_height = 0;
 }
 
+// Check if the line defines a texture path or color
 int	is_element_line(char *line)
 {
 	char	*p;
@@ -88,3 +89,36 @@ int	check_surroundings(t_config *cfg, int y, int x)
 		return (0);
 	return (1);
 }
+
+// /* Return 1 if the cell at (y,x) is fully surrounded by non-space chars */
+// int check_surroundings(t_config *cfg, int y, int x)
+// {
+//     int rows;
+//     int len;
+
+//     rows = cfg->map_height;
+//     /* cannot be on the very first or last row */
+//     if (y <= 0 || y >= rows - 1)
+//         return (0);
+
+//     /* above */
+//     len = ft_strlen(cfg->map[y - 1]);
+//     if (x >= len || cfg->map[y - 1][x] == ' ')
+//         return (0);
+
+//     /* below */
+//     len = ft_strlen(cfg->map[y + 1]);
+//     if (x >= len || cfg->map[y + 1][x] == ' ')
+//         return (0);
+
+//     /* left */
+//     if (x <= 0 || cfg->map[y][x - 1] == ' ')
+//         return (0);
+
+//     /* right */
+//     len = ft_strlen(cfg->map[y]);
+//     if (x >= len - 1 || cfg->map[y][x + 1] == ' ')
+//         return (0);
+
+//     return (1);
+// }

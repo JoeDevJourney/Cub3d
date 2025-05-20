@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:52:01 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/19 20:31:05 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:01:13 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		ft_putendl_fd("Usage: ./cub3D <map_file.cub>", 2);
+		ft_putendl_fd("Error: Usage -> ./cub3D <map_file.cub>", 2);
 		return (1);
 	}
 	if (parser(argv[1], &cfg) < 0)
@@ -31,13 +31,23 @@ int main(int argc, char **argv)
 	}
 
 	// ----------------TO DEBUG -----------------------------
-	printf("color : %d\n", cfg.floor.b);
-	printf("texture no : %s\n", cfg.texture_no);
+	printf("\n_______________TEXTURES_________________\n");
+	printf("texture NO : %s\n", cfg.texture_no);
+	printf("texture SO : %s\n", cfg.texture_so);
+	printf("texture EA : %s\n", cfg.texture_ea);
+	printf("texture WE : %s\n", cfg.texture_we);
+	printf("\n_______________COLORS_________________\n");
+	printf("color C; r:%d g:%d b:%d \n", cfg.ceiling.r, cfg.ceiling.g, cfg.ceiling.b);
+	printf("color F; r:%d g:%d b:%d \n", cfg.floor.r, cfg.floor.g, cfg.floor.b);
+	printf("\n_______________MAP DIMENSIONS_________________\n");	
 	printf("map width : %d\n", cfg.map_width);
 	printf("map height : %d\n", cfg.map_height);
-	printf("player x : %f, y : %f\n", cfg.player.x, cfg.player.y);
-	printf("player xdir : %f, ydir : %f\n", cfg.player.dir_x, cfg.player.dir_y);
-		 
+	printf("\n_______________PLAYER_________________\n");		
+	printf("player x : %f | player y : %f\n", cfg.player.x, cfg.player.y);
+	printf("player xdir : %f | player ydir : %f\n", cfg.player.dir_x, cfg.player.dir_y);
+	printf("plane x : %f | plane y : %f\n", cfg.player.plane_x, cfg.player.plane_y);
+	
+	printf("\n_______________MAP_________________\n");
 	print_map(cfg.map); // PRINT NORMALIZED MAP
 	
 	// TO-DO: initialize MLX, load textures, start game loop
