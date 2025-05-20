@@ -6,7 +6,7 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 15:42:23 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/20 13:32:08 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/20 14:28:13 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,30 @@ void	moving_left_right(t_cub	*cub)
 	}
 }
 
-// void	rotate_left_right(t_cub *cub)
-// {
-// 	double	old_dir_x;
-// 	double	old_dir_y;
-// 	double	rot_speed;
+void	rotate_left_right(t_cub *cub)
+{
+	double	old_dir_x;
+	double	rotspd;
+	double	old_plane_x;
 
-// 	rot_speed = 0.05;
-// 	if (mlx_is_key_down(cub->mlx_connect, MLX_KEY_LEFT))
-// 	{
-// 		old_dir_x = cub->dir_x;
-// 		cub->dir_x = cub->dir_x * cos(rot_speed);
-// 	}
-// }
+	rotspd = 0.05;
+	if (mlx_is_key_down(cub->mlx_connect, MLX_KEY_LEFT))
+	{
+		old_dir_x = cub->dir_x;
+		cub->dir_x = cub->dir_x * cos(rotspd) - cub->dir_y * sin(rotspd);
+		cub->dir_y = old_dir_x * sin(rotspd) + cub->dir_y * cos(rotspd);
+		old_plane_x = cub->plane_x;
+		cub->plane_x = cub->plane_x * cos(rotspd) - cub->plane_y * sin(rotspd);
+		cub->plane_y = old_plane_x * sin(rotspd) + cub->plane_y * cos(rotspd);
+	}
+	if (mlx_is_key_down(cub->mlx_connect, MLX_KEY_RIGHT))
+	{
+		old_dir_x = cub->dir_x;
+		cub->dir_x = cub->dir_x * cos(-rotspd) - cub->dir_y * sin(-rotspd);
+		cub->dir_y = old_dir_x * sin(-rotspd) + cub->dir_y * cos(-rotspd);
+		old_plane_x = cub->plane_x;
+		cub->plane_x = cub->plane_x * cos(-rotspd)
+			- cub->plane_y * sin(-rotspd);
+		cub->plane_y = old_plane_x * sin(-rotspd) + cub->plane_y * cos(-rotspd);
+	}
+}

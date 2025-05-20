@@ -6,7 +6,7 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:24:48 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/15 14:32:26 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/20 14:31:22 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	init_dummy_textures(t_cub *cub)
 	i = 0;
 	while (i < 4)
 	{
-		cub->textures[i] = malloc(sizeof(uint32_t) * TEXTURE_SIZE *  TEXTURE_SIZE);
+		cub->textures[i] = malloc(sizeof(uint32_t) * TEXTURE_SIZE
+				* TEXTURE_SIZE);
 		if (!cub->textures[i])
 			exit(EXIT_FAILURE);
 		j = 0;
