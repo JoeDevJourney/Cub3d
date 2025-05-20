@@ -6,7 +6,7 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:27:29 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/20 15:55:45 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/20 16:37:43 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,7 @@ int				check_surroundings(t_config *cfg, int y, int x);
 // Utils
 void			malloc_error(void);
 void			init_dummy_textures(t_cub *cub);
-int				**convert_char_map_to_int(char **char_map, int height, int width);
-
+int				**convert_map_to_int(char **char_map, int height, int width);
 // Events
 void			clean_exit(void *param);
 void			create_image(t_cub *image);

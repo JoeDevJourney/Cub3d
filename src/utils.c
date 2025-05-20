@@ -6,7 +6,7 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:24:48 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/20 15:54:33 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/20 16:34:53 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,23 +47,43 @@ void	init_dummy_textures(t_cub *cub)
 	}
 }
 
-int	**convert_char_map_to_int(char **char_map, int height, int width)
+static int	*convert_map_row(char *line, int width)
 {
-	int	**int_map = malloc(sizeof(int *) * height);
-	int	i, j;
+	int	*row;
+	int	j;
 
-	for (i = 0; i < height; i++)
+	row = malloc(sizeof(int) * width);
+	if (!row)
+		return (NULL);
+	j = 0;
+	while (j < width)
 	{
-		int_map[i] = malloc(sizeof(int) * width);
-		for (j = 0; j < width; j++)
-		{
-			if (char_map[i][j] == ' ' || char_map[i][j] == '\0')
-				int_map[i][j] = 1; // treat empty space as wall
-			else if (char_map[i][j] == '1')
-				int_map[i][j] = 1;
-			else
-				int_map[i][j] = 0;
-		}
+		if (line[j] == ' ' || line[j] == '\0')
+			row[j] = 1;
+		else if (line[j] == '1')
+			row[j] = 1;
+		else
+			row[j] = 0;
+		j++;
 	}
-	return int_map;
+	return (row);
+}
+
+int	**convert_map_to_int(char **char_map, int height, int width)
+{
+	int	**int_map;
+	int	i;
+
+	int_map = malloc(sizeof(int *) * height);
+	if (!int_map)
+		return (NULL);
+	i = 0;
+	while (i < height)
+	{
+		int_map[i] = convert_map_row(char_map[i], width);
+		if (!int_map[i])
+			return (NULL);
+		i++;
+	}
+	return (int_map);
 }
