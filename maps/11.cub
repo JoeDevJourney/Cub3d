@@ -3,8 +3,8 @@ SO ./textures/south_texture.png
 NO ./textures/north_texture.png
 EA ./textures/east_texture.png
 
-C 0,255   ,   0
-F 0,0   ,255
+C 69,255   ,   45
+F 36,100   ,255
 
 11111
 10001

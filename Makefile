@@ -43,6 +43,7 @@ SRC_FILES   = main.c \
 			  parser/utils.c \
 			  parser/utils2.c \
 			  parser/utils3.c \
+			  parser/closure.c \
 			  event.c \
 			  moving.c \
 			  raycast.c \

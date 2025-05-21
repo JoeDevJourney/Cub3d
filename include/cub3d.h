@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:27:29 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/20 16:37:43 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/21 19:55:01 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,10 @@ int				check_extension(const char *path);
 void			init_config(t_config *cfg);
 int				is_element_line(char *line);
 int				check_surroundings(t_config *cfg, int y, int x);
+
+// Closure__________________________________
+int				validate_map_closure_cells(t_config *cfg);
+
 // Utils
 void			malloc_error(void);
 void			init_dummy_textures(t_cub *cub);

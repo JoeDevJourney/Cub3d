@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/11 21:38:21 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/19 20:16:46 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/21 19:52:14 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,12 +144,42 @@ static int	validate_player(char **map)
 // 	return (0);
 // }
 
-// Validate each cell: allowed chars and closure
-static int	validate_map_structure(t_config *cfg)
+// // Validate each cell: allowed chars and closure
+// static int	validate_map_structure(t_config *cfg)
+// {
+// 	int		y;
+// 	int		x;
+// 	char	c;
+
+// 	y = 0;
+// 	while (y < cfg->map_height)
+// 	{
+// 		x = 0;
+// 		while (x < cfg->map_width)
+// 		{
+// 			c = cfg->map[y][x];
+// 			if (!(c == '1' || c == ' ' || c == '0'
+// 					|| ft_strchr("NSEW", c)))
+// 				return (ft_putendl_fd("Error: invalid map char", 2), -1);
+// 			if ((c == '0' || ft_strchr("NSEW", c))
+// 				&& !check_surroundings(cfg, y, x))
+// 				return (ft_putendl_fd("Error: map not closed", 2), -1);
+// 			//  && !check_surroundings(cfg, y, x))
+// 			// 	return (ft_putendl_fd("Error: map not closed", 2), -1);
+// 			x++;
+// 		}
+// 		y++;
+// 	}
+// 	return (0);
+// }
+
+
+// Validate map characters and overall enclosure via flood‐fill
+int validate_map_structure(t_config *cfg)
 {
-	int		y;
-	int		x;
-	char	c;
+	int   y;
+	int   x;
+	char  c;
 
 	y = 0;
 	while (y < cfg->map_height)
@@ -158,18 +188,17 @@ static int	validate_map_structure(t_config *cfg)
 		while (x < cfg->map_width)
 		{
 			c = cfg->map[y][x];
-			if (!(c == '1' || c == ' ' || c == '0'
-					|| ft_strchr("NSEW", c)))
+			//only '1','0',' ', or player chars allowed
+			if (!(c == '1' || c == '0' || c == ' '
+			   || ft_strchr("NSEW", c)))
 				return (ft_putendl_fd("Error: invalid map char", 2), -1);
-			if ((c == '0' || ft_strchr("NSEW", c))
-				&& !check_surroundings(cfg, y, x))
-				return (ft_putendl_fd("Error: map not closed", 2), -1);
-			//  && !check_surroundings(cfg, y, x))
-			// 	return (ft_putendl_fd("Error: map not closed", 2), -1);
 			x++;
 		}
 		y++;
 	}
+	// now perform a full flood‐fill closure check
+	if (validate_map_closure_cells(cfg) < 0)
+		return (-1);
 	return (0);
 }
 
