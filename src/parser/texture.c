@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:03:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/19 16:36:44 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:37:49 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,40 +71,9 @@ int	parse_texture(t_config *cfg, const char *line, int line_num)
 	path = extract_texture_path(line, line_num);
 	if (!path)
 		return (-1);
-	parts = ft_split(line, ' '); // ID is the first token
+	parts = ft_split(line, ' ');
 	id = parts[0];
 	res = assign_texture(cfg, id, path, line_num);
 	ft_free_2d(parts);
 	return (res);
 }
-
-// // To parse texture line (NO, SO, WE, EA)
-// static int parse_texture(t_config *cfg, const char *line, int line_num)
-// {
-// 	char **parts;
-// 	int	count;
-// 	char *dup;
-
-// 	parts = ft_split(line, ' ');
-// 	count = 0;
-// 	while (parts[count])
-// 		count++;
-// 	if (count != 2)
-// 		return (ft_free_2d(parts), report_err(line_num,
-// 				"invalid texture format"));
-// 	dup = ft_strdup(parts[1]);
-// 	if (dup == NULL)
-// 		return (ft_free_2d(parts), report_err(line_num, "memory allocation failed"));
-// 	if (!ft_strcmp(parts[0], "NO") && cfg->texture_no == NULL)
-// 		cfg->texture_no = dup;
-// 	else if (!ft_strcmp(parts[0], "SO") && cfg->texture_so == NULL)
-// 		cfg->texture_so = dup;
-// 	else if (!ft_strcmp(parts[0], "WE") && cfg->texture_we == NULL)
-// 		cfg->texture_we = dup;
-// 	else if (!ft_strcmp(parts[0], "EA") && cfg->texture_ea == NULL)
-// 		cfg->texture_ea = dup;
-// 	else
-// 		return (free(dup), ft_free_2d(parts), report_err(line_num, 
-// 				"unknown or duplicate texture ID"));				
-// 	return (ft_free_2d(parts), 0);
-// }

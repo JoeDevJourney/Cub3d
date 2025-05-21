@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:57:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/21 19:53:36 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:36:50 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,44 +53,19 @@ static int	process_line(t_config *cfg, char *line, int line_num)
 }
 
 // // Process a single config line: skip blanks. 
-// // checks if line is an "element line" (that defines a texture path or color
-// // then process it.
-// static int	process_config_line(t_config *cfg, char *line,
-// 	int *map_started, int line_num)
-// {
-// 	char	*trimmed;
-
-// 	trimmed = skip_spaces(line);
-// 	if (*trimmed == '\0')
-// 		return (1); // blank line, skip
-// 	if (!*map_started && is_element_line(line))
-// 	{
-// 		if (process_line(cfg, trimmed, line_num) < 0)
-// 			return (-1);
-// 	}
-// 	else
-// 	{
-// 		*map_started = 1;
-// 		if (add_map_line(cfg, trimmed) < 0)
-// 			return (-1);
-// 	}
-// 	return (0);
-// }
-
-static int process_config_line(t_config *cfg, char *line,
+// 1) skip blank lines, 2) if we haven't started the map yet, 
+// look only for element lines. 3) otherwise, it's a mapline 
+// it preserves all spaces
+static int	process_config_line(t_config *cfg, char *line,
 	int *map_started, int line_num)
 {
-	char *trimmed = skip_spaces(line);
+	char	*trimmed;
 
-	// 1) skip blank lines
+	trimmed = skip_spaces(line);
 	if (*trimmed == '\0')
 		return (1);
-
-	// 2) if we haven't started the map yet, look only for element lines
 	if (!*map_started && is_element_line(trimmed))
 		return (process_line(cfg, trimmed, line_num));
-
-	// 3) otherwise, it's a map line — preserve all spaces!
 	*map_started = 1;
 	return (add_map_line(cfg, line));
 }
@@ -124,6 +99,7 @@ int	parse_file(int fd, t_config *cfg)
 	}
 	return (0);
 }
+
 // Initialization of CFG. Check extension ".cub". Open the file
 // To read the .cub file and add the info for the config structure
 int	parser(const char *path, t_config *cfg)

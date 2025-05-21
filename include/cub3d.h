@@ -6,10 +6,9 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:27:29 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/21 19:55:01 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:44:41 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -38,6 +37,7 @@
 # define WIDTH 1980
 # define HEIGHT 1080
 # define TEXTURE_SIZE 64
+
 // Player Structure
 typedef struct s_player
 {
@@ -70,7 +70,8 @@ typedef struct s_config
 	int			map_width;
 	int			map_height;
 	t_player	player;
-}	t_config;	
+}	t_config;
+
 typedef enum e_dir
 {
 	NORTH = 0,

@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 15:22:58 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/20 14:39:11 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/21 20:38:47 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	strip_nl(char *line)
 }
 
 // Check the file has a ".cub" extension
-// Null, at least "x.cub", compare the ".cub"
+// Null, at least "x.cub" 5 chars, compare the ".cub"
 int	check_extension(const char *path)
 {
 	int		len;
@@ -33,12 +33,10 @@ int	check_extension(const char *path)
 
 	if (!path)
 		return (0);
-	/* 2) Must be at least "x.cub" (5 chars) */
 	len = ft_strlen(path);
 	if (len <= 4)
 		return (0);
 	suffix = (char *)path + (len - 4);
-	/* 4) Compare to ".cub" */
 	if (ft_strcmp(suffix, ".cub") != 0)
 		return (0);
 	return (1);
