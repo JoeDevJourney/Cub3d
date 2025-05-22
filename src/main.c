@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:52:01 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/22 13:07:29 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/22 14:32:46 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,17 @@ void	leaks(void)
 	system("leaks cub3D");
 }
 
+// Produce a 32-bit word which, in little-endian memory, gives
+// byte-0 = R, byte-1 = G, byte-2 = B, byte-3 = A.
+// That matches MLX42’s RGBA ordering.
+
+uint32_t pack_rgba(t_color c)
+{
+	return ((c.r & 0xFFu) <<  0)  // byte 0 -> R
+		 | ((c.g & 0xFFu) <<  8)  // byte 1 -> G
+		 | ((c.b & 0xFFu) << 16)  // byte 2 -> B
+		 | (0xFFu << 24); // byte 3 -> A=255
+}
 
 static void	init_cub(t_cub *cub, t_config *cfg)
 {
@@ -39,10 +50,9 @@ static void	init_cub(t_cub *cub, t_config *cfg)
 	cub->dir_y = cfg->player.dir_y;
 	cub->plane_x = cfg->player.plane_x;
 	cub->plane_y = cfg->player.plane_y;
-	cub->floor_color = (cfg->floor.r << 24)
-		| (cfg->floor.g << 16) | (cfg->floor.b << 8) | 0xFF;
-	cub->ceiling_color = (cfg->ceiling.r << 24)
-		| (cfg->ceiling.g << 16) | (cfg->ceiling.b << 8) | 0xFF;
+	// Pack RGBA colors
+	cub->ceiling_color = pack_rgba(cfg->ceiling);
+	cub->floor_color   = pack_rgba(cfg->floor);
 	init_dummy_textures(cub);
 }
 
