@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_column.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 16:22:40 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/23 14:41:41 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/23 15:11:34 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,67 +30,46 @@ static int	get_cardinal_direction(t_ray *ray)
 	}
 }
 
-void prepare_texture_data(t_tex *tex, t_ray *ray, t_cub *cub)
+void	prepare_texture_data(t_tex *tex, t_ray *ray, t_cub *cub)
 {
-    double   wall_x;
-    mlx_texture_t *t;
+	double			wall_x;
+	mlx_texture_t	*t;
 
-	t = cub->textures[ get_cardinal_direction(ray)];
-    tex->dir = get_cardinal_direction(ray);
-
-    // where along the wall we hit
-    if (ray->side == 0)
-        wall_x = cub->pos_y + ray->perp_dist * ray->ray_dir_y;
-    else
-        wall_x = cub->pos_x + ray->perp_dist * ray->ray_dir_x;
-    wall_x -= floor(wall_x);
-
-    // texture X coordinate
-    tex->tex_x = (int)(wall_x * (double)t->width);
-    if ((ray->side == 0 && ray->ray_dir_x < 0)
-     || (ray->side == 1 && ray->ray_dir_y > 0))
-    {
-        tex->tex_x = t->width - tex->tex_x - 1;
-    }
-
-    // step per screen‐pixel in texture‐space
-    tex->step    = (double)t->height / (double)ray->line_height;
-
-    // starting texture Y (it may start above 0)
-    tex->tex_pos = (ray->draw_start - (HEIGHT/2) + (ray->line_height/2))
-                  * tex->step;
+	t = cub->textures[get_cardinal_direction(ray)];
+	tex->dir = get_cardinal_direction(ray);
+	if (ray->side == 0)
+		wall_x = cub->pos_y + ray->perp_dist * ray->ray_dir_y;
+	else
+		wall_x = cub->pos_x + ray->perp_dist * ray->ray_dir_x;
+	wall_x -= floor(wall_x);
+	tex->tex_x = (int)(wall_x * (double)t->width);
+	if ((ray->side == 0 && ray->ray_dir_x < 0)
+		|| (ray->side == 1 && ray->ray_dir_y > 0))
+		tex->tex_x = t->width - tex->tex_x - 1;
+	tex->step = (double)t->height / (double)ray->line_height;
+	tex->tex_pos = (ray->draw_start - (HEIGHT / 2) + (ray->line_height / 2))
+		* tex->step;
 }
 
-void draw_textured_column(t_cub *cub, t_ray *ray, t_tex *tex, int x)
+void	draw_textured_column(t_cub *cub, t_ray *ray, t_tex *tex, int x)
 {
-    int            y;
-    int            tex_y;
-    uint32_t       color;
-    uint32_t      *screen = (uint32_t*)cub->img->pixels;
-    mlx_texture_t *t      = cub->textures[ tex->dir ];
-    uint32_t      *pixels = (uint32_t*)t->pixels;
+	int				y;
+	int				tex_y;
+	uint32_t		color;
+	mlx_texture_t	*t;
+	uint32_t		*pixels;
 
-    y = ray->draw_start;
-    while (y < ray->draw_end)
-    {
-        // wrap within [0 .. t->height)
-        tex_y = (int)tex->tex_pos % t->height;
-        tex->tex_pos += tex->step;
-
-        // pull the RGBA word from the PNG
-        color = pixels[ tex_y * t->width + tex->tex_x ];
-
-        //// darken if this was a “side” wall
-        // if (ray->side == 1)
-        // {
-        //     // shift RGB down by one bit, then re-set alpha=0xFF
-        //     color = ((color >> 1) & 0x7F7F7F7Fu)
-        //           | (0xFFu << 24);
-        // }
-
-        screen[y * WIDTH + x] = color;
-        y++;
-    }
+	t = cub->textures[tex->dir];
+	pixels = (uint32_t *)t->pixels;
+	y = ray->draw_start;
+	while (y < ray->draw_end)
+	{
+		tex_y = (int)tex->tex_pos % t->height;
+		tex->tex_pos += tex->step;
+		color = pixels[tex_y * t->width + tex->tex_x];
+		((uint32_t *)cub->img->pixels)[y * WIDTH + x] = color;
+		y++;
+	}
 }
 
 void	render_textured_column(t_cub *cub, t_ray *ray, int x)

@@ -1,7 +1,7 @@
-NO ./textures/north_texture.png
-SO ./textures/south_texture.png
-EA ./textures/east_texture.png
-WE ./textures/west_texture.png
+NO ./textures/Cherry.png
+SO ./textures/Cherry.png
+EA ./textures/Cherry.png
+WE ./textures/Cherry.png
 
 C 200,200, 200
 F 20,20,200

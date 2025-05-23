@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:52:01 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/23 14:25:42 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/23 15:14:17 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include "libft.h"
 #include <unistd.h>
-
 
 void	leaks(void)
 {
@@ -25,12 +24,12 @@ void	leaks(void)
 // byte-0 = R, byte-1 = G, byte-2 = B, byte-3 = A.
 // That matches MLX42’s RGBA ordering.
 
-uint32_t pack_rgba(t_color c)
+uint32_t	pack_rgba(t_color c)
 {
-	return ((c.r & 0xFFu) <<  0)  // byte 0 -> R
-		 | ((c.g & 0xFFu) <<  8)  // byte 1 -> G
-		 | ((c.b & 0xFFu) << 16)  // byte 2 -> B
-		 | (0xFFu << 24); // byte 3 -> A=255
+	return ((c.r & 0xFFu) << 0)
+		| ((c.g & 0xFFu) << 8)
+		| ((c.b & 0xFFu) << 16)
+		| (0xFFu << 24);
 }
 
 static void	init_cub(t_cub *cub, t_config *cfg)
@@ -42,7 +41,6 @@ static void	init_cub(t_cub *cub, t_config *cfg)
 	create_image(cub);
 	if (!cub->img || mlx_image_to_window(cub->mlx_connect, cub->img, 0, 0) < 0)
 		exit(EXIT_FAILURE);
-	//cub->map = convert_map_to_int(cfg->map, cfg->map_height, cfg->map_width);
 	cub->map = convert_map_to_int(cfg->map, cfg->map_height, cfg->map_width);
 	cub->pos_x = cfg->player.x;
 	cub->pos_y = cfg->player.y;
@@ -50,9 +48,8 @@ static void	init_cub(t_cub *cub, t_config *cfg)
 	cub->dir_y = cfg->player.dir_y;
 	cub->plane_x = cfg->player.plane_x;
 	cub->plane_y = cfg->player.plane_y;
-	// Pack RGBA colors
 	cub->ceiling_color = pack_rgba(cfg->ceiling);
-	cub->floor_color   = pack_rgba(cfg->floor);
+	cub->floor_color = pack_rgba(cfg->floor);
 	load_textures(cub, cfg);
 }
 
@@ -79,6 +76,5 @@ int	main(int argc, char **argv)
 	mlx_loop(cub.mlx_connect);
 	mlx_terminate(cub.mlx_connect);
 	free_config(&cfg);
-	
 	return (0);
 }

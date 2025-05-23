@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   event.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:06:48 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/22 12:55:59 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/23 15:14:37 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	handle_input(void *param)
 {
 	t_cub	*cub;
 
-	//printf("[DEBUG] handle_input called\n");
 	cub = (t_cub *)param;
 	if (mlx_is_key_down(cub->mlx_connect, MLX_KEY_ESCAPE))
 		clean_exit(cub);
