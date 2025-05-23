@@ -6,11 +6,11 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:52:01 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/23 15:20:59 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/23 15:56:50 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../include/cub3d.h"
 #include "libft.h"
 #include <unistd.h>
 
@@ -73,6 +73,7 @@ int	main(int argc, char **argv)
 	print_map(cfg.map);
 	init_cub(&cub, &cfg);
 	mlx_loop_hook(cub.mlx_connect, handle_input, &cub);
+	mlx_close_hook(cub.mlx_connect, clean_exit, &cub);
 	mlx_loop(cub.mlx_connect);
 	mlx_terminate(cub.mlx_connect);
 	free_config(&cfg);

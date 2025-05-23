@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:57:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/21 20:36:50 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/23 15:39:45 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	parser(const char *path, t_config *cfg)
 		return (report_err(0, "file must end in .cub"));
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
-		return (perror("Error: openning file .club"), -1);
+		return (perror("Error: openning file .cub"), -1);
 	ret = parse_file(fd, cfg);
 	close(fd);
 	if (ret < 0)
