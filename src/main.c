@@ -6,7 +6,7 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:52:01 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/23 15:14:17 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/23 15:20:59 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ void	leaks(void)
 
 uint32_t	pack_rgba(t_color c)
 {
-	return ((c.r & 0xFFu) << 0)
+	return (((c.r & 0xFFu) << 0)
 		| ((c.g & 0xFFu) << 8)
 		| ((c.b & 0xFFu) << 16)
-		| (0xFFu << 24);
+		| (0xFFu << 24));
 }
 
 static void	init_cub(t_cub *cub, t_config *cfg)
