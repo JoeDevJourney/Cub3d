@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:27:29 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/21 20:44:41 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:47:48 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,8 @@ typedef struct s_cub
 	mlx_t			*mlx_connect;
 	mlx_image_t		*img;
 	char			*img_addr;
-	uint32_t		*textures[4]; //FOR NORTH EAST SOUTH WEST
+	// uint32_t		*textures[4]; //FOR NORTH EAST SOUTH WEST
+	mlx_texture_t 	*textures[4];
 	int				**map;
 	double			pos_x;
 	double			pos_y;
@@ -169,6 +170,8 @@ void			calculate_projection(t_ray *ray);
 // render
 void			render_textured_column(t_cub *cub, t_ray *ray, int x);
 void			render_frame(t_cub *cub);
+void 			load_textures(t_cub *cub, t_config *cfg);
+
 // moving
 void			moving_forward_backward(t_cub *cub);
 void			moving_left_right(t_cub	*cub);

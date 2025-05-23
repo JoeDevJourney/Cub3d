@@ -6,7 +6,7 @@
 /*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:52:01 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/22 14:32:46 by jorgutie         ###   ########.fr       */
+/*   Updated: 2025/05/23 14:25:42 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	init_cub(t_cub *cub, t_config *cfg)
 	// Pack RGBA colors
 	cub->ceiling_color = pack_rgba(cfg->ceiling);
 	cub->floor_color   = pack_rgba(cfg->floor);
-	init_dummy_textures(cub);
+	load_textures(cub, cfg);
 }
 
 int	main(int argc, char **argv)

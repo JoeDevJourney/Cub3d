@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jorgutie <jorgutie@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:24:48 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/23 11:40:53 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/23 14:29:14 by jorgutie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,34 +18,34 @@ void	malloc_error(void)
 	exit(EXIT_FAILURE);
 }
 
-void	init_dummy_textures(t_cub *cub)
-{
-	int	i;
-	int	j;
+// void	init_dummy_textures(t_cub *cub)
+// {
+// 	int	i;
+// 	int	j;
 
-	i = 0;
-	while (i < 4)
-	{
-		cub->textures[i] = malloc(sizeof(uint32_t) * TEXTURE_SIZE
-				* TEXTURE_SIZE);
-		if (!cub->textures[i])
-			exit(EXIT_FAILURE);
-		j = 0;
-		while (j < TEXTURE_SIZE * TEXTURE_SIZE)
-		{
-			if (i == 0)
-				cub->textures[i][j] = 0xFF0000FF;
-			else if (i == 1)
-				cub->textures[i][j] = 0x00FF00FF;
-			else if (i == 2)
-				cub->textures[i][j] = 0x0000FFFF;
-			else
-				cub->textures[i][j] = 0xFFFF00FF;
-			j++;
-		}
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (i < 4)
+// 	{
+// 		cub->textures[i] = malloc(sizeof(uint32_t) * TEXTURE_SIZE
+// 				* TEXTURE_SIZE);
+// 		if (!cub->textures[i])
+// 			exit(EXIT_FAILURE);
+// 		j = 0;
+// 		while (j < TEXTURE_SIZE * TEXTURE_SIZE)
+// 		{
+// 			if (i == 0)
+// 				cub->textures[i][j] = 0xFF0000FF;
+// 			else if (i == 1)
+// 				cub->textures[i][j] = 0x00FF00FF;
+// 			else if (i == 2)
+// 				cub->textures[i][j] = 0x0000FFFF;
+// 			else
+// 				cub->textures[i][j] = 0xFFFF00FF;
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
 
 static int	*convert_map_row(char *line, int width)
 {
@@ -88,38 +88,24 @@ int	**convert_map_to_int(char **char_map, int height, int width)
 	return (int_map);
 }
 
-static void	load_textures(t_cub *cub, const char *path, int dir)
+// load_textures:
+// For each of the four cardinal texture paths in cfg, load the
+// PNG into an mlx_texture_t, error out on failure.
+void load_textures(t_cub *cub, t_config *cfg)
 {
-	mlx_texture_t	*png;
-	int				x;
-	int				y;
-	uint8_t			*rgba;
+    cub->textures[NORTH] = mlx_load_png(cfg->texture_no);
+    if (!cub->textures[NORTH])
+        perror("mlx_load_png NO"), exit(EXIT_FAILURE);
 
-	png = mlx_load_png(path);
-	if (!png)
-		exit(EXIT_FAILURE);
-	cub->textures[dir] = malloc(sizeof(uint32_t) * TEXTURE_SIZE * TEXTURE_SIZE);
-	if (!cub->textures[dir])
-		exit(EXIT_FAILURE);
-	y = 0;
-	while (y < TEXTURE_SIZE)
-	{
-		x = 0;
-		while (x < TEXTURE_SIZE)
-		{
-			pixel = *((uint32_t *)(png->pixels + (y *png->width + x) * sizeof(uint32_t)));
-			cub->textures[dir][y * TEXTURE_SIZE + x] = pixel;
-			x++;
-		}
-		y++;;
-	}
-	mlx_delete_texture(png);
-}
+    cub->textures[SOUTH] = mlx_load_png(cfg->texture_so);
+    if (!cub->textures[SOUTH])
+        perror("mlx_load_png SO"), exit(EXIT_FAILURE);
 
-void	load_all_textures(t_cub *cub)
-{
-	load_textures(cub, "./textures/Cherry.png", NORTH);
-	load_textures(cub, "./textures/Cherry.png", SOUTH);
-	load_textures(cub, "./textures/Cherry.png", EAST);
-	load_textures(cub, "./textures/Cherry.png", WEST);
+    cub->textures[WEST] = mlx_load_png(cfg->texture_we);
+    if (!cub->textures[WEST])
+        perror("mlx_load_png WE"), exit(EXIT_FAILURE);
+
+    cub->textures[EAST] = mlx_load_png(cfg->texture_ea);
+    if (!cub->textures[EAST])
+        perror("mlx_load_png EA"), exit(EXIT_FAILURE);
 }
