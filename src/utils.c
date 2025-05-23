@@ -6,7 +6,7 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 19:24:48 by jbrandt           #+#    #+#             */
-/*   Updated: 2025/05/20 16:34:53 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/23 11:40:53 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,40 @@ int	**convert_map_to_int(char **char_map, int height, int width)
 		i++;
 	}
 	return (int_map);
+}
+
+static void	load_textures(t_cub *cub, const char *path, int dir)
+{
+	mlx_texture_t	*png;
+	int				x;
+	int				y;
+	uint8_t			*rgba;
+
+	png = mlx_load_png(path);
+	if (!png)
+		exit(EXIT_FAILURE);
+	cub->textures[dir] = malloc(sizeof(uint32_t) * TEXTURE_SIZE * TEXTURE_SIZE);
+	if (!cub->textures[dir])
+		exit(EXIT_FAILURE);
+	y = 0;
+	while (y < TEXTURE_SIZE)
+	{
+		x = 0;
+		while (x < TEXTURE_SIZE)
+		{
+			pixel = *((uint32_t *)(png->pixels + (y *png->width + x) * sizeof(uint32_t)));
+			cub->textures[dir][y * TEXTURE_SIZE + x] = pixel;
+			x++;
+		}
+		y++;;
+	}
+	mlx_delete_texture(png);
+}
+
+void	load_all_textures(t_cub *cub)
+{
+	load_textures(cub, "./textures/Cherry.png", NORTH);
+	load_textures(cub, "./textures/Cherry.png", SOUTH);
+	load_textures(cub, "./textures/Cherry.png", EAST);
+	load_textures(cub, "./textures/Cherry.png", WEST);
 }
