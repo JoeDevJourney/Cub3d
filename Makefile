@@ -10,6 +10,9 @@ MLX_DIR     = MLX42
 MLX_LIB     = $(MLX_DIR)/build/libmlx42.a
 MLX_REPO    = https://github.com/codam-coding-college/MLX42.git
 MLX_FLAGS   = $(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm
+# MLX_FLAGS = $(MLX_LIB) \
+#             $(MLX_DIR)/build/_deps/glfw-build/src/libglfw3.a \
+#             -lX11 -lXrandr -lXi -lXxf86vm -lXcursor -lGL -lm -ldl -pthread
 
 # Compiler and Flags
 CC          = cc

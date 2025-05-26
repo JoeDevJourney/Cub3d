@@ -6,7 +6,7 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:52:01 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/23 15:56:50 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/26 17:22:56 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ static void	init_cub(t_cub *cub, t_config *cfg)
 {
 	cub->mlx_connect = mlx_init(WIDTH, HEIGHT, "cub3D", false);
 	if (!cub->mlx_connect)
+	{
+		free_config(cfg);
 		exit(EXIT_FAILURE);
+	}
 	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	create_image(cub);
 	if (!cub->img || mlx_image_to_window(cub->mlx_connect, cub->img, 0, 0) < 0)
@@ -75,7 +78,6 @@ int	main(int argc, char **argv)
 	mlx_loop_hook(cub.mlx_connect, handle_input, &cub);
 	mlx_close_hook(cub.mlx_connect, clean_exit, &cub);
 	mlx_loop(cub.mlx_connect);
-	mlx_terminate(cub.mlx_connect);
 	free_config(&cfg);
 	return (0);
 }
