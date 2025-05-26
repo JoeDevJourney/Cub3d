@@ -1,0 +1,7 @@
+NO ./textures/Cherry.png
+SO ./textures/Cherry.png
+EA ./textures/Cherry.png
+WE ./textures/Cherry.png
+
+C 200,200, 200
+F 20,20,200

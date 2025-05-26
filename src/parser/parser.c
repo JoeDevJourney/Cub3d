@@ -6,7 +6,7 @@
 /*   By: jbrandt <jbrandt@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 17:57:32 by jorgutie          #+#    #+#             */
-/*   Updated: 2025/05/23 15:39:45 by jbrandt          ###   ########.fr       */
+/*   Updated: 2025/05/26 14:29:59 by jbrandt          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ int	parser(const char *path, t_config *cfg)
 	close(fd);
 	if (ret < 0)
 		return (-1);
+	if (!cfg->map || !cfg->map[0])
+		return (report_err(0, "empty or invalid .cub file"));
 	if (normalize_map(cfg) < 0 || check_normalization(cfg) < 0
 		|| validate_cfg(cfg) < 0)
 		return (-1);
